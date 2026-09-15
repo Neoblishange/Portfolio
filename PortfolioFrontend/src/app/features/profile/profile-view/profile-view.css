@@ -1,0 +1,46 @@
+.profile-view {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.job-title {
+  color: var(--muted);
+  font-size: 1.125rem;
+  margin-top: 0.25rem;
+}
+
+.availability {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--accent);
+}
+
+.pitch {
+  margin-top: 1.5rem;
+  max-width: 700px;
+}
+
+.contact {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.contact dt {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.contact dd {
+  margin: 0.125rem 0 0;
+}
+
+.status {
+  color: var(--muted);
+}
+
+.status--error {
+  color: #a13d2b;
+}

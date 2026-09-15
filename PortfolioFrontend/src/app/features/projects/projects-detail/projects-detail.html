@@ -1,0 +1,33 @@
+<div class="projects-detail">
+  @if (projectResource.isLoading()) {
+    <p>Chargement...</p>
+  }
+
+  @if (projectResource.error()) {
+    <p class="error">Impossible de charger ce projet.</p>
+  }
+
+  @if (projectResource.value(); as project) {
+    <a routerLink="/projects">← Retour à la liste</a>
+
+    <h1>{{ project.title }}</h1>
+    <p class="dates">
+      {{ project.startDate }}
+      @if (project.endDate) {
+        → {{ project.endDate }}
+      }
+    </p>
+
+    <p>{{ project.description }}</p>
+<!--
+    @if (project.images.length > 0) {
+      <div class="images">
+        @for (image of project.images; track image.id) {
+          <img [src]="image.url" [alt]="image.alt ?? project.title" />
+        }
+      </div>
+    }
+-->
+    <a [routerLink]="['/projects', project.id, 'edit']">Modifier</a>
+  }
+</div>

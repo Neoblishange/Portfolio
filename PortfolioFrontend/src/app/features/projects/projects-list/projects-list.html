@@ -1,0 +1,41 @@
+<div class="projects-list">
+  @if (projectsResource.isLoading()) {
+    <p class="status">Chargement...</p>
+  }
+
+  @if (projectsResource.error()) {
+    <p class="status status--error">Une erreur est survenue lors du chargement des projets.</p>
+  }
+
+  @if (projectsResource.hasValue() && projectsResource.value().length === 0) {
+    <p class="status">Aucun projet pour le moment.</p>
+  }
+
+  @if (projectsResource.hasValue()) {
+    <ul class="project-index">
+      @for (project of projectsResource.value(); track project.id) {
+        <li class="project-index__item">
+          <h3 class="project-index__title">{{ project.title }}</h3>
+          <p class="project-index__summary">{{ project.shortDescription }}</p>
+          <p class="project-index__dates">
+            {{ project.startDate }}
+            @if (project.endDate) {
+              - {{ project.endDate }}
+            }
+          </p>
+          <ul>
+            @for (desc of project.description; track desc) {
+              <li class="project-index__summary">{{ desc }}</li>
+            }
+          </ul>
+
+          <!--
+          <a [routerLink]="[project.id]">{{ project.title }}</a>
+          <a [routerLink]="[project.id, 'edit']">Modifier</a>
+          <button (click)="onDelete(project.id)">Supprimer</button>
+          -->
+        </li>
+      }
+    </ul>
+  }
+</div>

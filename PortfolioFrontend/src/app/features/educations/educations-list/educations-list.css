@@ -1,0 +1,74 @@
+.educations-list {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 0.4rem;
+  bottom: 0.4rem;
+  width: 1px;
+  background: var(--line);
+}
+
+.timeline__item {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.timeline__item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline__marker {
+  position: absolute;
+  left: 0;
+  top: 0.4rem;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid var(--muted);
+}
+
+.timeline__dates {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.timeline__role {
+  margin: 0.25rem 0 0;
+  font-size: 1.25rem;
+}
+
+.timeline__company {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+}
+
+.timeline__description {
+  margin-top: 0.75rem;
+}
+
+.status {
+  color: var(--muted);
+}
+
+.status--error {
+  color: #a13d2b;
+}
+
+p {
+  text-align: justify;
+}

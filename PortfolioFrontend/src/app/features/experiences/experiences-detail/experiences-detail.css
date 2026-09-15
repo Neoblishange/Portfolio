@@ -1,0 +1,9 @@
+.experiences-detail .location,
+.experiences-detail .dates {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.error {
+  color: #c0392b;
+}

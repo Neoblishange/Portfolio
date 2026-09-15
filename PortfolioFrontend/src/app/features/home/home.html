@@ -1,0 +1,63 @@
+<main class="home">
+  @if (profileResource.error()) {
+    <p class="status status--error">Impossible de charger le profil.</p>
+  }
+
+  @if (profileResource.value(); as profile) {
+    <header class="hero">
+      <div class="hero__content">
+        <h1 class="hero__name">{{ profile.firstName }} {{ profile.lastName }}</h1>
+        <p class="hero__role">{{ profile.jobTitle }}</p>
+        <p class="hero__pitch">{{ profile.pitch }}</p>
+
+        <dl class="hero__specs">
+          <div class="hero__spec">
+            <dt>Expérience</dt>
+            <dd>{{ profile.yearsOfExperience }} years</dd>
+          </div>
+          <div class="hero__spec">
+            <dt>Disponibilité</dt>
+            <dd>{{ availabilityLabels[profile.availability] }}</dd>
+          </div>
+          <div class="hero__spec">
+            <dt>Contact</dt>
+            <dd class="hero__contact-links">
+              <a [href]="'mailto:' + profile.email">{{ profile.email }}</a>
+              @if (profile.linkedinUrl) {
+                <a [href]="profile.linkedinUrl" target="_blank" rel="noopener">LinkedIn</a>
+              }
+              @if (profile.githubUrl) {
+                <a [href]="profile.githubUrl" target="_blank" rel="noopener">GitHub</a>
+              }
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </header>
+  }
+
+  <section class="section" aria-labelledby="experiences-heading">
+    <h2 id="experiences-heading" class="section__heading">Experiences</h2>
+    <app-experiences-list />
+  </section>
+
+  <section class="section section--raised" aria-labelledby="educations-heading">
+    <h2 id="educations-heading" class="section__heading">Education</h2>
+    <app-educations-list />
+  </section>
+
+  <section class="section" aria-labelledby="projects-heading">
+    <h2 id="projects-heading" class="section__heading">Projects</h2>
+    <app-projects-list />
+  </section>
+
+  <section class="section section--raised" aria-labelledby="skills-heading">
+    <h2 id="skills-heading" class="section__heading">Skills</h2>
+    <app-skills-list />
+  </section>
+
+  <section class="section" aria-labelledby="interests-heading">
+    <h2 id="interests-heading" class="section__heading">Interests</h2>
+    <app-interests-manager />
+  </section>
+</main>

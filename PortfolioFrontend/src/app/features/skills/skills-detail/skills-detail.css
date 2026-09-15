@@ -1,0 +1,9 @@
+.skills-detail .category,
+.skills-detail .level {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.error {
+  color: #c0392b;
+}

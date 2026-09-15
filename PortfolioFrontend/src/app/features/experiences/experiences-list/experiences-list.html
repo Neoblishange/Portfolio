@@ -1,0 +1,49 @@
+<div class="experiences-list">
+  @if (experiencesResource.isLoading()) {
+    <p class="status">Chargement...</p>
+  }
+
+  @if (experiencesResource.error()) {
+    <p class="status status--error">Une erreur est survenue lors du chargement des expériences.</p>
+  }
+
+  @if (experiencesResource.value(); as experiences) {
+    @if (experiences.length === 0) {
+      <p class="status">Aucune expérience pour le moment.</p>
+    }
+
+    <ol class="timeline">
+      @for (experience of experiences; track experience.id) {
+        <li class="timeline__item">
+          <div class="timeline__marker" [class.timeline__marker--current]="experience.current"></div>
+          <div class="timeline__body">
+            <p class="timeline__dates">
+              {{ experience.startDate }}
+              @if (experience.current) {
+                - Aujourd'hui
+              } @else {
+                - {{ experience.endDate }}
+              }
+            </p>
+            <h3 class="timeline__role">{{ experience.position }}</h3>
+            <p class="timeline__company">
+              {{ experience.company }}
+              @if (experience.location) {
+                · {{ experience.location }}
+              }
+            </p>
+            <ul>
+              @for (desc of experience.description; track desc) {
+                <li class="timeline__description">{{ desc }}</li>
+              }
+            </ul>
+          </div>
+          <!--
+          <a [routerLink]="[experience.id, 'edit']">Modifier</a>
+          <button (click)="onDelete(experience.id)">Supprimer</button>
+          -->
+        </li>
+      }
+    </ol>
+  }
+</div>

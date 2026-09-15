@@ -1,0 +1,47 @@
+<form (submit)="$event.preventDefault(); onSubmit()">
+  <h1>{{ isEditMode() ? 'Modifier la formation' : 'Nouvelle formation' }}</h1>
+
+  <label>
+    Établissement
+    <input type="text" [formField]="educationForm.schoolName" />
+  </label>
+  @if (educationForm.schoolName().touched() && educationForm.schoolName().invalid()) {
+    @for (err of educationForm.schoolName().errors(); track err.kind) {
+      <p class="error">{{ err.message }}</p>
+    }
+  }
+
+  <label>
+    Diplôme
+    <input type="text" [formField]="educationForm.degree" />
+  </label>
+  @if (educationForm.degree().touched() && educationForm.degree().invalid()) {
+    @for (err of educationForm.degree().errors(); track err.kind) {
+      <p class="error">{{ err.message }}</p>
+    }
+  }
+
+  <label>
+    Lieu
+    <input type="text" [formField]="educationForm.location" />
+  </label>
+
+  <label>
+    Date de début
+    <input type="date" [formField]="educationForm.startDate" />
+  </label>
+
+  <label>
+    Date de fin
+    <input type="date" [formField]="educationForm.endDate" />
+  </label>
+
+  <label>
+    Description
+    <textarea [formField]="educationForm.description"></textarea>
+  </label>
+
+  <button type="submit" [disabled]="educationForm().invalid() || educationForm().submitting()">
+    {{ isEditMode() ? 'Mettre à jour' : 'Créer' }}
+  </button>
+</form>

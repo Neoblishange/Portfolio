@@ -1,0 +1,32 @@
+<div class="categories-manager">
+  <h1>Catégories</h1>
+
+  <form (submit)="$event.preventDefault(); onAdd()">
+    <input
+      type="text"
+      placeholder="Nom de la catégorie"
+      [value]="newCategoryName()"
+      (input)="newCategoryName.set($any($event.target).value)"
+    />
+    <button type="submit">Ajouter</button>
+  </form>
+
+  @if (categoriesResource.isLoading()) {
+    <p>Chargement...</p>
+  }
+
+  @if (categoriesResource.error()) {
+    <p class="error">Erreur lors du chargement des catégories.</p>
+  }
+
+  @if (categoriesResource.value(); as categories) {
+    <ul>
+      @for (category of categories; track category.id) {
+        <li>
+          {{ category.name }}
+          <button (click)="onDelete(category.id)">Supprimer</button>
+        </li>
+      }
+    </ul>
+  }
+</div>

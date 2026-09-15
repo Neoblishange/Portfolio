@@ -1,0 +1,19 @@
+.projects-detail .dates {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.projects-detail .images {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.projects-detail .images img {
+  max-width: 200px;
+  border-radius: 8px;
+}
+
+.error {
+  color: #c0392b;
+}

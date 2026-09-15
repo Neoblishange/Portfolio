@@ -1,0 +1,89 @@
+<form (submit)="$event.preventDefault(); onSubmit()">
+  <h1>Modifier le profil</h1>
+
+  <label>
+    Firstname
+    <input type="text" [formField]="profileForm.firstName" />
+  </label>
+  @if (profileForm.firstName().touched() && profileForm.firstName().invalid()) {
+    @for (err of profileForm.firstName().errors(); track err.kind) {
+      <p class="error">{{ err.message }}</p>
+    }
+  }
+
+  <label>
+    Lastname
+    <input type="text" [formField]="profileForm.lastName" />
+  </label>
+  @if (profileForm.lastName().touched() && profileForm.lastName().invalid()) {
+    @for (err of profileForm.lastName().errors(); track err.kind) {
+      <p class="error">{{ err.message }}</p>
+    }
+  }
+
+  <label>
+    Position
+    <input type="text" [formField]="profileForm.jobTitle" />
+  </label>
+  @if (profileForm.jobTitle().touched() && profileForm.jobTitle().invalid()) {
+    @for (err of profileForm.jobTitle().errors(); track err.kind) {
+      <p class="error">{{ err.message }}</p>
+    }
+  }
+
+  <label>
+    Mobile
+    <input type="tel" [formField]="profileForm.phone" />
+  </label>
+
+  <label>
+    Email
+    <input type="email" [formField]="profileForm.email" />
+  </label>
+  @if (profileForm.email().touched() && profileForm.email().invalid()) {
+    @for (err of profileForm.email().errors(); track err.kind) {
+      <p class="error">{{ err.message }}</p>
+    }
+  }
+
+  <label>
+    LinkedIn
+    <input type="url" [formField]="profileForm.linkedinUrl" />
+  </label>
+
+  <label>
+    GitHub
+    <input type="url" [formField]="profileForm.githubUrl" />
+  </label>
+
+  <label>
+    Pitch
+    <textarea [formField]="profileForm.pitch"></textarea>
+  </label>
+  @if (profileForm.pitch().touched() && profileForm.pitch().invalid()) {
+    @for (err of profileForm.pitch().errors(); track err.kind) {
+      <p class="error">{{ err.message }}</p>
+    }
+  }
+
+  <label>
+    Experience years
+    <input type="number" [formField]="profileForm.yearsOfExperience" />
+  </label>
+
+  <label>
+    Availability
+    <select
+      [value]="model().availability"
+      (change)="onAvailabilityChange($any($event.target).value)"
+    >
+      @for (option of availabilityOptions; track option) {
+        <option [value]="option">{{ availabilityLabels[option] }}</option>
+      }
+    </select>
+  </label>
+
+  <button type="submit" [disabled]="profileForm().invalid() || profileForm().submitting()">
+    Update
+  </button>
+</form>

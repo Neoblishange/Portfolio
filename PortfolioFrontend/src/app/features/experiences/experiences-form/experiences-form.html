@@ -1,0 +1,59 @@
+<form (submit)="$event.preventDefault(); onSubmit()">
+  <h1>{{ isEditMode() ? "Modifier l'expérience" : 'Nouvelle expérience' }}</h1>
+
+  <label>
+    Entreprise
+    <input type="text" [formField]="experienceForm.company" />
+  </label>
+  @if (experienceForm.company().touched() && experienceForm.company().invalid()) {
+    @for (err of experienceForm.company().errors(); track err.kind) {
+      <p class="error">{{ err.message }}</p>
+    }
+  }
+
+  <label>
+    Poste
+    <input type="text" [formField]="experienceForm.position" />
+  </label>
+  @if (experienceForm.position().touched() && experienceForm.position().invalid()) {
+    @for (err of experienceForm.position().errors(); track err.kind) {
+      <p class="error">{{ err.message }}</p>
+    }
+  }
+
+  <label>
+    Lieu
+    <input type="text" [formField]="experienceForm.location" />
+  </label>
+
+  <label>
+    Description
+    <textarea [formField]="experienceForm.description"></textarea>
+  </label>
+
+  <label>
+    Date de début
+    <input type="date" [formField]="experienceForm.startDate" />
+  </label>
+
+  <label class="checkbox">
+    <input type="checkbox" [formField]="experienceForm.current" />
+    Poste actuel
+  </label>
+
+  @if (!model().current) {
+    <label>
+      Date de fin
+      <input type="date" [formField]="experienceForm.endDate" />
+    </label>
+    @if (experienceForm.endDate().touched() && experienceForm.endDate().invalid()) {
+      @for (err of experienceForm.endDate().errors(); track err.kind) {
+        <p class="error">{{ err.message }}</p>
+      }
+    }
+  }
+
+  <button type="submit" [disabled]="experienceForm().invalid() || experienceForm().submitting()">
+    {{ isEditMode() ? 'Mettre à jour' : 'Créer' }}
+  </button>
+</form>

@@ -1,0 +1,52 @@
+<div class="educations-list">
+  <!--
+  <header>
+    <h1>Formations</h1>
+    <a routerLink="new">+ Nouvelle formation</a>
+  </header>
+  -->
+
+  @if (educationsResource.isLoading()) {
+    <p class="status">Chargement...</p>
+  }
+
+  @if (educationsResource.error()) {
+    <p class="status status--error">Une erreur est survenue lors du chargement des formations.</p>
+  }
+
+  @if (educationsResource.value(); as educations) {
+    @if (educations.length === 0) {
+      <p class="status">Aucune formation pour le moment.</p>
+    }
+
+    <ol class="timeline">
+      @for (education of educations; track education.id) {
+        <li class="timeline__item">
+          <div class="timeline__marker"></div>
+          <div class="timeline__body">
+            <p class="timeline__dates">
+              {{ education.startDate }}
+              @if (education.endDate) {
+                - {{ education.endDate }}
+              }
+            </p>
+            <h3 class="timeline__role">{{ education.degree }}</h3>
+            <p class="timeline__company">
+              {{ education.schoolName }}
+              @if (education.location) {
+                · {{ education.location }}
+              }
+            </p>
+            @if (education.description) {
+              <p class="timeline__description">{{ education.description }}</p>
+            }
+          </div>
+          <!--
+          <a [routerLink]="[education.id, 'edit']">Modifier</a>
+          <button (click)="onDelete(education.id)">Supprimer</button>
+          -->
+        </li>
+      }
+    </ol>
+  }
+</div>

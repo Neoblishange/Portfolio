@@ -1,0 +1,35 @@
+<div class="skills-list">
+  @if (skillsResource.isLoading()) {
+    <p class="status">Chargement...</p>
+  }
+
+  @if (skillsResource.error()) {
+    <p class="status status--error">Une erreur est survenue lors du chargement des skills.</p>
+  }
+
+  @if (groupedSkills().length === 0 && skillsResource.hasValue()) {
+    <p class="status">Aucun skill pour le moment.</p>
+  }
+
+  <div class="skill-groups">
+    @for (group of groupedSkills(); track group.category.id) {
+      <section class="skill-group">
+        <h3 class="skill-group__title">{{ group.category.name }}</h3>
+        <ul class="skill-group__list">
+          @for (skill of group.skills; track skill.id) {
+            <li class="skill-tag">
+              {{ skill.name }}
+              @if (skill.level) {
+                <span class="skill-tag__level">{{ skill.level }}</span>
+              }
+              <!--
+              <a [routerLink]="[skill.id, 'edit']">Modifier</a>
+              <button (click)="onDelete(skill.id)">Supprimer</button>
+              -->
+            </li>
+          }
+        </ul>
+      </section>
+    }
+  </div>
+</div>

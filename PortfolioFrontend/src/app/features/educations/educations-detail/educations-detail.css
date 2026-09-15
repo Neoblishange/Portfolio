@@ -1,0 +1,13 @@
+.educations-detail .location,
+.educations-detail .dates {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.status {
+  color: var(--muted);
+}
+
+.status--error {
+  color: #a13d2b;
+}

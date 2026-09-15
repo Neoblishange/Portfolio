@@ -1,0 +1,97 @@
+.hero {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 6rem 1.5rem 4rem;
+}
+
+.hero__content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.hero__name {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 1.05;
+}
+
+.hero__role {
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  color: color-mix(in srgb, var(--paper) 75%, transparent);
+}
+
+.hero__pitch {
+  margin-top: 1.5rem;
+  max-width: 700px;
+  color: color-mix(in srgb, var(--paper) 85%, transparent);
+}
+
+.hero__specs {
+  margin-top: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--paper) 25%, transparent);
+  padding-top: 1.5rem;
+}
+
+.hero__spec dt {
+  font-size: 0.8125rem;
+  color: color-mix(in srgb, var(--paper) 60%, transparent);
+}
+
+.hero__spec dd {
+  margin: 0.25rem 0 0;
+  font-size: 1rem;
+}
+
+.hero__contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.hero__contact-links a {
+  color: var(--paper);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--paper) 40%, transparent);
+  width: fit-content;
+}
+
+.hero__contact-links a:hover {
+  border-bottom-color: var(--accent);
+}
+
+.section {
+  padding: 4rem 1.5rem;
+}
+
+.section--raised {
+  background: var(--paper-raised);
+}
+
+.section__heading {
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  font-size: 1.75rem;
+}
+
+.status {
+  text-align: center;
+  padding: 2rem;
+}
+
+.status--error {
+  color: #a13d2b;
+}
+
+@media (max-width: 640px) {
+  .hero__specs {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+p {
+  text-align: justify ;
+}

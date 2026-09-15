@@ -1,0 +1,44 @@
+<div class="profile-view">
+  @if (profileResource.isLoading()) {
+    <p class="status">Chargement...</p>
+  }
+
+  @if (profileResource.error()) {
+    <p class="status status--error">Impossible de charger le profil.</p>
+  }
+
+  @if (profileResource.value(); as profile) {
+    <h1>{{ profile.firstName }} {{ profile.lastName }}</h1>
+    <p class="job-title">{{ profile.jobTitle }}</p>
+    <p class="availability">{{ availabilityLabels[profile.availability] }}</p>
+
+    <p class="pitch">{{ profile.pitch }}</p>
+
+    <dl class="contact">
+      <div>
+        <dt>Email</dt>
+        <dd><a [href]="'mailto:' + profile.email">{{ profile.email }}</a></dd>
+      </div>
+      @if (profile.phone) {
+        <div>
+          <dt>Téléphone</dt>
+          <dd>{{ profile.phone }}</dd>
+        </div>
+      }
+      @if (profile.linkedinUrl) {
+        <div>
+          <dt>LinkedIn</dt>
+          <dd><a [href]="profile.linkedinUrl" target="_blank" rel="noopener">{{ profile.linkedinUrl }}</a></dd>
+        </div>
+      }
+      @if (profile.githubUrl) {
+        <div>
+          <dt>GitHub</dt>
+          <dd><a [href]="profile.githubUrl" target="_blank" rel="noopener">{{ profile.githubUrl }}</a></dd>
+        </div>
+      }
+    </dl>
+
+    <!-- <a routerLink="/profile/edit">Modifier le profil</a> -->
+  }
+</div>
