@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: PortfolioBackend
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/portfolio}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+app:
+  admin:
+    username: ${ADMIN_USERNAME:admin}
+    password: ${ADMIN_PASSWORD}
+
+  jwt:
+    private-key-path: ${APP_JWT_PRIVATE_KEY_PATH}
+    public-key-path: ${APP_JWT_PUBLIC_KEY_PATH}
+    issuer: ${APP_JWT_ISSUER:portfolio-api}
