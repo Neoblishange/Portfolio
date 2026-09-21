@@ -1,4 +1,4 @@
-My current portfolio : http://13.60.55.204/
+My portfolio currently deployed on AWS : http://13.60.55.204/
 
 # Full-Stack Developer Portfolio (WIP)
 
