@@ -1,5 +1,4 @@
 .env
 .idea
 keys
-PortfolioBackend/src/main/java/com/neoblishange/portfolio/config/PortfolioDataInitializer.java
 *.pem
