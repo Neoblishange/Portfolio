@@ -1,4 +1,4 @@
-package com.neoblishange.portfolio.config.data;
+package com.neoblishange.portfolio.config;
 
 import com.neoblishange.portfolio.entity.profile.Availability;
 

@@ -113,7 +113,6 @@ public class PortfolioDataInitializer implements CommandLineRunner {
             Category category = new Category();
 
             category.setName(categoryData.name());
-            category.setDisplayOrder(categoryData.displayOrder());
 
             for (PortfolioData.SkillData skillData : categoryData.skills()) {
 
@@ -143,7 +142,6 @@ public class PortfolioDataInitializer implements CommandLineRunner {
             experience.setStartDate(dataItem.startDate());
             experience.setEndDate(dataItem.endDate());
             experience.setCurrent(dataItem.current());
-            experience.setDisplayOrder(dataItem.displayOrder());
             experience.setDescription(dataItem.description());
 
             experienceRepository.save(experience);
@@ -189,10 +187,6 @@ public class PortfolioDataInitializer implements CommandLineRunner {
             project.setSlug(dataItem.slug());
             project.setShortDescription(dataItem.shortDescription());
             project.setDescription(dataItem.description());
-            project.setGithubUrl(dataItem.githubUrl());
-            project.setDemoUrl(dataItem.demoUrl());
-            project.setFeatured(dataItem.featured());
-            project.setStatus(dataItem.status());
             project.setStartDate(dataItem.startDate());
             project.setEndDate(dataItem.endDate());
 
