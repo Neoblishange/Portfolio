@@ -68,10 +68,6 @@ public record PortfolioData(
             String slug,
             String shortDescription,
             List<String> description,
-            String githubUrl,
-            String demoUrl,
-            boolean featured,
-            com.neoblishange.portfolio.entity.project.ProjectStatus status,
             LocalDate startDate,
             LocalDate endDate
     ) {}
