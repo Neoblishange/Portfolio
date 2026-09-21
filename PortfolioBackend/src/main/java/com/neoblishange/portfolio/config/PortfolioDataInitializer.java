@@ -1,8 +1,7 @@
 package com.neoblishange.portfolio.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.neoblishange.portfolio.config.data.PortfolioData;
+import com.neoblishange.portfolio.config.PortfolioData;
 import com.neoblishange.portfolio.entity.Category;
 import com.neoblishange.portfolio.entity.Education;
 import com.neoblishange.portfolio.entity.Experience;
