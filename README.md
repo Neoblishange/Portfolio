@@ -2,9 +2,9 @@
 
 A production-oriented personal portfolio built as a full-stack web application.
 
-The project goes beyond a traditional static portfolio: it provides a public-facing website, a secured administration area, persistent content management, an AI-powered feature, caching, event-driven processing, automated testing and deployment.
+The project goes beyond a traditional static portfolio: it provides a public-facing website, a secured administration area, persistent content management, caching, event-driven processing, automated testing and deployment.
 
-The application is designed to demonstrate practical skills in **Java, Spring Boot, Angular, TypeScript, PostgreSQL, Docker, AWS, Python, FastAPI, Redis and Kafka** through a single coherent architecture.
+The application is designed to demonstrate practical skills in **Java, Spring Boot, Angular, TypeScript, PostgreSQL, Docker, AWS, Redis ** through a single coherent architecture.
 
 ---
 
@@ -20,7 +20,6 @@ Visitors can:
 * Browse projects
 * View technical skills
 * Explore professional experience
-* Read articles or technical content
 * Access external project resources
 * Submit a contact request
 
@@ -71,25 +70,14 @@ The portfolio is therefore both a **personal presentation website** and a demons
                 │   Controller → Service → Repository    │
                 └────────────────────┬───────────────────┘
                                      │
-                     ┌───────────────┼───────────────┐
-                     │               │               │
-                     ▼               ▼               ▼
-              ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
-              │ PostgreSQL  │ │    Redis    │ │    Kafka    │
-              │             │ │             │ │             │
-              │ Persistence │ │    Cache    │ │    Events   │
-              └─────────────┘ └─────────────┘ └─────────────┘
-                                             
-                             
-                         ┌──────────────────────┐
-                         │   Python / FastAPI   │
-                         │                      │
-                         │      AI Service      │
-                         └──────────┬───────────┘
-                                    │
-                                    ▼
-                            AI / LLM Provider
-
+                     ┌───────────────┼
+                     │               │              
+                     ▼               ▼              
+              ┌─────────────┐ ┌─────────────┐ 
+              │ PostgreSQL  │ │    Redis    │ 
+              │             │ │             │ 
+              │ Persistence │ │    Cache    │ 
+              └─────────────┘ └─────────────┘ 
 
                 ┌────────────────────────────────────────┐
                 │ Infrastructure                         │
@@ -116,9 +104,7 @@ The architecture is intentionally progressive: the core application remains a co
 | Persistence       | PostgreSQL                                  |
 | ORM               | Spring Data JPA / Hibernate                 |
 | Validation        | Jakarta Validation                          |
-| AI service        | Python / FastAPI                            |
 | Cache             | Redis                                       |
-| Messaging         | Apache Kafka                                |
 | Testing           | Spring Boot Test / JUnit                    |
 | Containerization  | Docker                                      |
 | CI/CD             | GitHub Actions                              |
@@ -371,39 +357,6 @@ Security is handled at the backend rather than relying exclusively on frontend r
 
 ---
 
-# AI Architecture
-
-AI functionality is implemented as a **specialized Python service** rather than moving the main backend to Python.
-
-```text
-     Angular
-        │
-        ▼
-   Spring Boot
-        │
-        │ REST
-        │
-        ▼
-     FastAPI
-        │
-        ▼
-     AI / LLM
-```
-
-Spring Boot remains responsible for the application's core business logic.
-
-FastAPI is responsible for AI-specific operations such as:
-
-* Portfolio content analysis
-* Project summarization
-* Semantic search
-* Recruiter-oriented questions
-* AI-assisted portfolio interaction
-
-This separation keeps the main business backend strongly typed and focused while allowing Python to be used where its AI ecosystem provides a clear advantage.
-
----
-
 # Caching with Redis
 
 Redis is used as a high-speed cache for data that is expensive or unnecessary to retrieve repeatedly.
@@ -434,45 +387,6 @@ Redis is therefore an optimization layer, not the primary database.
 
 ---
 
-# Event-Driven Architecture with Kafka
-
-Apache Kafka is used for asynchronous events where immediate synchronous processing is unnecessary.
-
-For example:
-
-```text
- Visitor submits contact form
-              │
-              ▼
-        Spring Boot API
-              │
-              ▼
-      ContactMessage saved
-              │
-              │ publish event
-              │
-              ▼
-            Kafka
-              │
-       ┌──────┴──────┐
-       ▼             ▼
- Notification    Analytics
-   Service        Service
-```
-
-Possible events include:
-
-```text
-ContactMessageCreated
-ProjectPublished
-ArticlePublished
-PortfolioVisitRecorded
-```
-
-Kafka decouples event producers from consumers and provides a foundation for asynchronous processing.
-
----
-
 # Infrastructure
 
 The application is containerized using Docker.
@@ -488,9 +402,9 @@ A typical deployment consists of independent services:
 │  │  Container  │     │   Container   │        │
 │  └─────────────┘     └───────┬───────┘        │
 │                              │                │
-│                 ┌────────────┼────────────┐   │
-│                 ▼            ▼            ▼   │
-│            PostgreSQL      Redis        Kafka │
+│                 ┌────────────┼                │
+│                 ▼            ▼                │
+│            PostgreSQL      Redis              │
 │                                               │
 └───────────────────────────────────────────────┘
 ```
@@ -554,11 +468,7 @@ The frontend never accesses PostgreSQL directly.
 
 ### Specialized services
 
-Python is used for AI-specific functionality rather than duplicating the entire backend.
-
 Redis is used for caching rather than replacing PostgreSQL.
-
-Kafka is used for asynchronous events rather than for ordinary request/response communication.
 
 ### Progressive complexity
 
@@ -576,8 +486,6 @@ Additional infrastructure is introduced only when it solves a real problem:
 
 ```text
 Redis  → caching
-Kafka  → asynchronous events
-Python → AI capabilities
 Docker → reproducible deployment
 AWS    → production hosting
 ```
@@ -603,11 +511,8 @@ The project is designed to demonstrate practical knowledge of:
 * CI/CD
 * AWS deployment
 * Logging and monitoring
-* Python microservices
-* AI integration
 * Redis caching
 * Event-driven architecture
-* Kafka
 
 The final result is intended to be a **realistic production-oriented application**, rather than a collection of disconnected technology demos.
 
@@ -647,28 +552,7 @@ The final result is intended to be a **realistic production-oriented application
           │             │                    │             │
           │  Source of  │                    │    Cache    │
           │    Truth    │                    │             │
-          └─────────────┘                    └─────────────┘
-                                                 
-                                  │
-                                  │ Events
-                                  │
-                                  ▼
-                           ┌─────────────┐
-                           │    Kafka    │
-                           │             │
-                           │  Event Bus  │
-                           └──────┬──────┘
-                                  │
-                                  ▼
-                         ┌─────────────────┐
-                         │ Python / FastAPI│
-                         │                 │
-                         │ AI capabilities │
-                         └────────┬────────┘
-                                  │
-                                  ▼
-                               AI / LLM
-
+          └─────────────┘                    └─────────────┘                                              
 
                    ┌──────────────────────────────┐
                    │    Docker / GitHub Actions   │
@@ -680,4 +564,4 @@ The final result is intended to be a **realistic production-oriented application
                                  AWS
 ```
 
-The architecture combines a conventional **Java/Spring enterprise backend** with a modern **Angular frontend**, relational persistence, cloud infrastructure, AI capabilities, caching and event-driven processing while maintaining clear separation of responsibilities between each component.
+The architecture combines a conventional **Java/Spring enterprise backend** with a modern **Angular frontend**, relational persistence, cloud infrastructure, caching and event-driven processing while maintaining clear separation of responsibilities between each component.
