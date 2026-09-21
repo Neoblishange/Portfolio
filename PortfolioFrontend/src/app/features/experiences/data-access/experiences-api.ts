@@ -6,7 +6,7 @@ import { Experience, ExperiencePayload } from '../models/experience';
 @Service()
 export class ExperiencesApi {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/experiences';
+  private readonly apiUrl = '/api/experiences';
 
   getAll(): Observable<Experience[]> {
     return this.http.get<Experience[]>(this.apiUrl);

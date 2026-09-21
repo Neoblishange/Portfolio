@@ -6,7 +6,7 @@ import { Skill, SkillPayload } from '../models/skill';
 @Service()
 export class SkillsApi {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/skills';
+  private readonly apiUrl = '/api/skills';
 
   getAll(): Observable<Skill[]> {
     return this.http.get<Skill[]>(this.apiUrl);

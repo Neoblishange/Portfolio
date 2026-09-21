@@ -6,7 +6,7 @@ import { Education, EducationPayload } from '../models/education';
 @Service()
 export class EducationsApi {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/educations';
+  private readonly apiUrl = '/api/educations';
 
   getAll(): Observable<Education[]> {
     return this.http.get<Education[]>(this.apiUrl);

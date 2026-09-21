@@ -7,7 +7,7 @@ import {Project, ProjectPayload} from '../models/project';
 @Service()
 export class ProjectsApi {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/projects';
+  private readonly apiUrl = '/api/projects';
 
   getAll(): Observable<Project[]> {
     return this.http.get<Project[]>(this.apiUrl);

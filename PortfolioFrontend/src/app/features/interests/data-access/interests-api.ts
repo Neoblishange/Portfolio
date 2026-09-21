@@ -6,7 +6,7 @@ import { Interest, InterestPayload } from '../models/interest';
 @Service()
 export class InterestsApi {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/interests';
+  private readonly apiUrl = '/api/interests';
 
   getAll(): Observable<Interest[]> {
     return this.http.get<Interest[]>(this.apiUrl);
