@@ -1,8 +1,8 @@
 <form (submit)="$event.preventDefault(); onSubmit()">
-  <h1>{{ isEditMode() ? 'Modifier la formation' : 'Nouvelle formation' }}</h1>
+  <h1>{{ isEditMode() ? 'Edit education' : 'New education' }}</h1>
 
   <label>
-    Établissement
+    Institution
     <input type="text" [formField]="educationForm.schoolName" />
   </label>
   @if (educationForm.schoolName().touched() && educationForm.schoolName().invalid()) {
@@ -12,7 +12,7 @@
   }
 
   <label>
-    Diplôme
+    Degree
     <input type="text" [formField]="educationForm.degree" />
   </label>
   @if (educationForm.degree().touched() && educationForm.degree().invalid()) {
@@ -22,17 +22,17 @@
   }
 
   <label>
-    Lieu
+    Location
     <input type="text" [formField]="educationForm.location" />
   </label>
 
   <label>
-    Date de début
+    Start date
     <input type="date" [formField]="educationForm.startDate" />
   </label>
 
   <label>
-    Date de fin
+    End date
     <input type="date" [formField]="educationForm.endDate" />
   </label>
 
@@ -42,6 +42,6 @@
   </label>
 
   <button type="submit" [disabled]="educationForm().invalid() || educationForm().submitting()">
-    {{ isEditMode() ? 'Mettre à jour' : 'Créer' }}
+    {{ isEditMode() ? 'Update' : 'Create' }}
   </button>
 </form>

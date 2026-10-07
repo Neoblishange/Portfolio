@@ -1,14 +1,14 @@
 <div class="projects-detail">
   @if (projectResource.isLoading()) {
-    <p>Chargement...</p>
+    <p>Loading...</p>
   }
 
   @if (projectResource.error()) {
-    <p class="error">Impossible de charger ce projet.</p>
+    <p class="error">Unable to load this project.</p>
   }
 
   @if (projectResource.value(); as project) {
-    <a routerLink="/projects">← Retour à la liste</a>
+    <a routerLink="/projects">← Back to projects</a>
 
     <h1>{{ project.title }}</h1>
     <p class="dates">
@@ -28,6 +28,6 @@
       </div>
     }
 -->
-    <a [routerLink]="['/projects', project.id, 'edit']">Modifier</a>
+    <a [routerLink]="['/projects', project.id, 'edit']">Edit</a>
   }
 </div>

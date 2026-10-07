@@ -1,8 +1,8 @@
 <form (submit)="$event.preventDefault(); onSubmit()">
-  <h1>{{ isEditMode() ? "Modifier l'expérience" : 'Nouvelle expérience' }}</h1>
+  <h1>{{ isEditMode() ? 'Edit experience' : 'New experience' }}</h1>
 
   <label>
-    Entreprise
+    Company
     <input type="text" [formField]="experienceForm.company" />
   </label>
   @if (experienceForm.company().touched() && experienceForm.company().invalid()) {
@@ -12,7 +12,7 @@
   }
 
   <label>
-    Poste
+    Position
     <input type="text" [formField]="experienceForm.position" />
   </label>
   @if (experienceForm.position().touched() && experienceForm.position().invalid()) {
@@ -22,7 +22,7 @@
   }
 
   <label>
-    Lieu
+    Location
     <input type="text" [formField]="experienceForm.location" />
   </label>
 
@@ -32,18 +32,18 @@
   </label>
 
   <label>
-    Date de début
+    Start date
     <input type="date" [formField]="experienceForm.startDate" />
   </label>
 
   <label class="checkbox">
     <input type="checkbox" [formField]="experienceForm.current" />
-    Poste actuel
+    Current position
   </label>
 
   @if (!model().current) {
     <label>
-      Date de fin
+      End date
       <input type="date" [formField]="experienceForm.endDate" />
     </label>
     @if (experienceForm.endDate().touched() && experienceForm.endDate().invalid()) {
@@ -54,6 +54,6 @@
   }
 
   <button type="submit" [disabled]="experienceForm().invalid() || experienceForm().submitting()">
-    {{ isEditMode() ? 'Mettre à jour' : 'Créer' }}
+    {{ isEditMode() ? 'Update' : 'Create' }}
   </button>
 </form>

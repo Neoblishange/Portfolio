@@ -63,15 +63,12 @@ export class EducationsForm {
   }
 
   protected readonly educationForm = form(this.model, path => {
-    required(path.schoolName, { message: "L'établissement est requis" });
-    maxLength(path.schoolName, 200, { message: '200 caractères maximum' });
-
-    maxLength(path.location, 150, { message: '150 caractères maximum' });
-
-    required(path.startDate, { message: 'La date de début est requise' });
-
-    required(path.degree, { message: 'Le diplôme est requis' });
-    maxLength(path.degree, 200, { message: '200 caractères maximum' });
+    required(path.schoolName, { message: 'Institution is required' });
+    maxLength(path.schoolName, 200, { message: 'Maximum 200 characters' });
+    maxLength(path.location, 150, { message: 'Maximum 150 characters' });
+    required(path.startDate, { message: 'Start date is required' });
+    required(path.degree, { message: 'Degree is required' });
+    maxLength(path.degree, 200, { message: 'Maximum 200 characters' });
   });
 
   protected async onSubmit(): Promise<void> {

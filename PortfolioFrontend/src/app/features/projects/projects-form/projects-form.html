@@ -1,10 +1,10 @@
 <form (submit)="$event.preventDefault(); onSubmit()">
   <!--
-  <h1>{{ isEditMode() ? 'Modifier le projet' : 'Nouveau projet' }}</h1>
+  <h1>{{ isEditMode() ? 'Edit project' : 'New project' }}</h1>
   -->
 
   <label>
-    Titre
+    Title
     <input type="text" [formField]="projectForm.title" />
   </label>
   @if (projectForm.title().touched() && projectForm.title().invalid()) {
@@ -24,7 +24,7 @@
   }
 
   <label>
-    Description courte
+    Short description
     <input type="text" [formField]="projectForm.shortDescription" />
   </label>
   @if (projectForm.shortDescription().touched() && projectForm.shortDescription().invalid()) {
@@ -39,16 +39,16 @@
   </label>
 
   <label>
-    Date de début
+    Start date
     <input type="date" [formField]="projectForm.startDate" />
   </label>
 
   <label>
-    Date de fin
+    End date
     <input type="date" [formField]="projectForm.endDate" />
   </label>
 
   <button type="submit" [disabled]="projectForm().invalid() || projectForm().submitting()">
-    {{ isEditMode() ? 'Mettre à jour' : 'Créer' }}
+    {{ isEditMode() ? 'Update' : 'Create' }}
   </button>
 </form>

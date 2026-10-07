@@ -61,12 +61,10 @@ export class SkillsForm {
   }
 
   protected readonly skillForm = form(this.model, path => {
-    required(path.name, { message: 'Le nom est requis' });
-    maxLength(path.name, 100, { message: '100 caractères maximum' });
-
-    maxLength(path.level, 50, { message: '50 caractères maximum' });
-
-    required(path.categoryId, { message: 'La catégorie est requise' });
+    required(path.name, { message: 'Name is required' });
+    maxLength(path.name, 100, { message: 'Maximum 100 characters' });
+    maxLength(path.level, 50, { message: 'Maximum 50 characters' });
+    required(path.categoryId, { message: 'Category is required' });
   });
 
   protected onCategoryChange(value: string): void {

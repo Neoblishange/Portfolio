@@ -1,12 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
 import { EducationsApi } from '../data-access/educations-api';
 
 @Component({
   selector: 'app-educations-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './educations-list.html',
   styleUrl: './educations-list.css'
 })
@@ -18,7 +17,7 @@ export class EducationsList {
   });
 
   protected onDelete(id: number): void {
-    if (!confirm('Supprimer cette formation ?')) {
+    if (!confirm('Delete this education?')) {
       return;
     }
 

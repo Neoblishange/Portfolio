@@ -1,10 +1,10 @@
-<div class="profile-view">
+  <div class="profile-view">
   @if (profileResource.isLoading()) {
-    <p class="status">Chargement...</p>
+    <p class="status">Loading...</p>
   }
 
   @if (profileResource.error()) {
-    <p class="status status--error">Impossible de charger le profil.</p>
+    <p class="status status--error">Unable to load the profile.</p>
   }
 
   @if (profileResource.value(); as profile) {
@@ -21,7 +21,7 @@
       </div>
       @if (profile.phone) {
         <div>
-          <dt>Téléphone</dt>
+          <dt>Phone</dt>
           <dd>{{ profile.phone }}</dd>
         </div>
       }
@@ -39,6 +39,6 @@
       }
     </dl>
 
-    <!-- <a routerLink="/profile/edit">Modifier le profil</a> -->
+    <!-- <a routerLink="/profile/edit">Edit profile</a> -->
   }
 </div>

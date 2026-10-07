@@ -1,28 +1,33 @@
-<main class="home">
+<main id="top" class="home">
   @if (profileResource.error()) {
-    <p class="status status--error">Impossible de charger le profil.</p>
+    <p class="status status--error">Unable to load the profile.</p>
   }
 
   @if (profileResource.value(); as profile) {
     <header class="hero">
       <div class="hero__content">
+        <p class="hero__eyebrow"><span class="hero__signal"></span> PORTFOLIO / PROFILE</p>
         <h1 class="hero__name">{{ profile.firstName }} {{ profile.lastName }}</h1>
         <p class="hero__role">{{ profile.jobTitle }}</p>
         <p class="hero__pitch">{{ profile.pitch }}</p>
 
         <dl class="hero__specs">
           <div class="hero__spec">
-            <dt>Expérience</dt>
+            <dt>Experience</dt>
             <dd>{{ profile.yearsOfExperience }} years</dd>
-          </div>
-          <div class="hero__spec">
-            <dt>Disponibilité</dt>
-            <dd>{{ availabilityLabels[profile.availability] }}</dd>
           </div>
           <div class="hero__spec">
             <dt>Contact</dt>
             <dd class="hero__contact-links">
               <a [href]="'mailto:' + profile.email">{{ profile.email }}</a>
+              @if (profile.phone) {
+                <a [href]="'tel:' + profile.phone">{{ profile.phone }}</a>
+              }
+            </dd>
+          </div>
+          <div class="hero__spec">
+            <dt>Networks</dt>
+            <dd class="hero__contact-links">
               @if (profile.linkedinUrl) {
                 <a [href]="profile.linkedinUrl" target="_blank" rel="noopener">LinkedIn</a>
               }
@@ -36,28 +41,60 @@
     </header>
   }
 
-  <section class="section" aria-labelledby="experiences-heading">
-    <h2 id="experiences-heading" class="section__heading">Experiences</h2>
+  <nav class="home-nav" aria-label="Portfolio navigation">
+    <a class="home-nav__brand" href="#top" aria-label="Back to top">FS<span>.</span></a>
+    <div class="home-nav__links">
+      <a href="#experiences" [class.home-nav__link--active]="activeSection() === 'experiences'" [attr.aria-current]="activeSection() === 'experiences' ? 'location' : null">Experience</a>
+      <a href="#educations" [class.home-nav__link--active]="activeSection() === 'educations'" [attr.aria-current]="activeSection() === 'educations' ? 'location' : null">Education</a>
+      <a href="#projects" [class.home-nav__link--active]="activeSection() === 'projects'" [attr.aria-current]="activeSection() === 'projects' ? 'location' : null">Projects</a>
+      <a href="#skills" [class.home-nav__link--active]="activeSection() === 'skills'" [attr.aria-current]="activeSection() === 'skills' ? 'location' : null">Skills</a>
+      <a href="#interests" [class.home-nav__link--active]="activeSection() === 'interests'" [attr.aria-current]="activeSection() === 'interests' ? 'location' : null">Interests</a>
+    </div>
+    <span class="home-nav__status"><span></span> Available</span>
+  </nav>
+
+  <section id="experiences" class="section" aria-labelledby="experiences-heading">
+    <header class="section__header">
+      <p class="section__eyebrow">01 / Every role has shaped the way I build and collaborate.</p>
+      <h2 id="experiences-heading" class="section__heading">Experience</h2>
+    </header>
     <app-experiences-list />
   </section>
 
-  <section class="section section--raised" aria-labelledby="educations-heading">
-    <h2 id="educations-heading" class="section__heading">Education</h2>
+  <section id="educations" class="section section--raised" aria-labelledby="educations-heading">
+    <header class="section__header">
+      <p class="section__eyebrow">02 / Each step in my education opened a new path to explore.</p>
+      <h2 id="educations-heading" class="section__heading">Education</h2>
+    </header>
     <app-educations-list />
   </section>
 
-  <section class="section" aria-labelledby="projects-heading">
-    <h2 id="projects-heading" class="section__heading">Projects</h2>
+  <section id="projects" class="section" aria-labelledby="projects-heading">
+    <header class="section__header">
+      <p class="section__eyebrow">03 / Here are a few ideas brought to life through code.</p>
+      <h2 id="projects-heading" class="section__heading">Projects</h2>
+    </header>
     <app-projects-list />
   </section>
 
-  <section class="section section--raised" aria-labelledby="skills-heading">
-    <h2 id="skills-heading" class="section__heading">Skills</h2>
+  <section id="skills" class="section section--raised" aria-labelledby="skills-heading">
+    <header class="section__header">
+      <p class="section__eyebrow">04 / These are the tools I use to turn ideas into reality.</p>
+      <h2 id="skills-heading" class="section__heading">Skills</h2>
+    </header>
     <app-skills-list />
   </section>
 
-  <section class="section" aria-labelledby="interests-heading">
-    <h2 id="interests-heading" class="section__heading">Interests</h2>
+  <section id="interests" class="section" aria-labelledby="interests-heading">
+    <header class="section__header">
+      <p class="section__eyebrow">05 / Outside of work, curiosity leads me in new directions.</p>
+      <h2 id="interests-heading" class="section__heading">Interests</h2>
+    </header>
     <app-interests-manager />
   </section>
+
+  <footer class="home-footer">
+    <span>END OF PROFILE</span>
+    <a href="#top">Back to top ↑</a>
+  </footer>
 </main>

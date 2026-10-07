@@ -1,22 +1,22 @@
 <div class="categories-manager">
-  <h1>Catégories</h1>
+  <h1>Categories</h1>
 
   <form (submit)="$event.preventDefault(); onAdd()">
     <input
       type="text"
-      placeholder="Nom de la catégorie"
+      placeholder="Category name"
       [value]="newCategoryName()"
       (input)="newCategoryName.set($any($event.target).value)"
     />
-    <button type="submit">Ajouter</button>
+    <button type="submit">Add</button>
   </form>
 
   @if (categoriesResource.isLoading()) {
-    <p>Chargement...</p>
+    <p>Loading...</p>
   }
 
   @if (categoriesResource.error()) {
-    <p class="error">Erreur lors du chargement des catégories.</p>
+    <p class="error">An error occurred while loading categories.</p>
   }
 
   @if (categoriesResource.value(); as categories) {
@@ -24,7 +24,7 @@
       @for (category of categories; track category.id) {
         <li>
           {{ category.name }}
-          <button (click)="onDelete(category.id)">Supprimer</button>
+          <button (click)="onDelete(category.id)">Delete</button>
         </li>
       }
     </ul>

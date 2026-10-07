@@ -1,9 +1,16 @@
 import { Component, computed, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
 import { SkillsApi } from '../data-access/skills-api';
 import { Skill } from '../models/skill';
 import { Category } from '../models/category';
+
+type CategoryImage =
+  | 'architecture_design'
+  | 'database'
+  | 'languages'
+  | 'languages_frameworks'
+  | 'methods_collaboration'
+  | 'tools_devops';
 
 interface SkillsGroup {
   category: Category;
@@ -13,7 +20,6 @@ interface SkillsGroup {
 @Component({
   selector: 'app-skills-list',
   standalone: true,
-  imports: [RouterLink],
   templateUrl: './skills-list.html',
   styleUrl: './skills-list.css'
 })
@@ -42,8 +48,22 @@ export class SkillsList {
     );
   });
 
+  protected categoryImage(categoryName: string): CategoryImage {
+    const name = categoryName.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+    if (/database|base de donnees|data|sql/.test(name)) return 'database';
+    if (/devops|cloud|infra|outil|tool/.test(name)) return 'tools_devops';
+    if (/method|methode|collab|agile/.test(name)) return 'methods_collaboration';
+    if (/architecture|design|ux|graph/.test(name)) return 'architecture_design';
+    if (/framework|frontend|front-end|backend|back-end|web|api|serveur/.test(name)) {
+      return 'languages_frameworks';
+    }
+    if (/language|langue|programming|programmation/.test(name)) return 'languages';
+    return 'languages_frameworks';
+  }
+
   protected onDelete(id: number): void {
-    if (!confirm('Supprimer ce skill ?')) {
+    if (!confirm('Delete this skill?')) {
       return;
     }
 

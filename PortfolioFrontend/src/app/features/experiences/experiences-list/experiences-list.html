@@ -1,15 +1,15 @@
 <div class="experiences-list">
   @if (experiencesResource.isLoading()) {
-    <p class="status">Chargement...</p>
+    <p class="status">Loading...</p>
   }
 
   @if (experiencesResource.error()) {
-    <p class="status status--error">Une erreur est survenue lors du chargement des expériences.</p>
+    <p class="status status--error">An error occurred while loading experience.</p>
   }
 
   @if (experiencesResource.value(); as experiences) {
     @if (experiences.length === 0) {
-      <p class="status">Aucune expérience pour le moment.</p>
+      <p class="status">No experience yet.</p>
     }
 
     <ol class="timeline">
@@ -20,7 +20,7 @@
             <p class="timeline__dates">
               {{ experience.startDate }}
               @if (experience.current) {
-                - Aujourd'hui
+                - Present
               } @else {
                 - {{ experience.endDate }}
               }
@@ -39,8 +39,8 @@
             </ul>
           </div>
           <!--
-          <a [routerLink]="[experience.id, 'edit']">Modifier</a>
-          <button (click)="onDelete(experience.id)">Supprimer</button>
+          <a [routerLink]="[experience.id, 'edit']">Edit</a>
+          <button (click)="onDelete(experience.id)">Delete</button>
           -->
         </li>
       }

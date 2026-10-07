@@ -1,14 +1,14 @@
 <div class="educations-detail">
   @if (educationResource.isLoading()) {
-    <p class="status">Chargement...</p>
+    <p class="status">Loading...</p>
   }
 
   @if (educationResource.error()) {
-    <p class="status status--error">Impossible de charger cette formation.</p>
+    <p class="status status--error">Unable to load this education.</p>
   }
 
   @if (educationResource.value(); as education) {
-    <a routerLink="/educations">← Retour à la liste</a>
+    <a routerLink="/educations">← Back to education list</a>
 
     <h1>{{ education.degree }}</h1>
     <h2>{{ education.schoolName }}</h2>
@@ -27,6 +27,6 @@
       <p>{{ education.description }}</p>
     }
 
-    <a [routerLink]="['/educations', education.id, 'edit']">Modifier</a>
+    <a [routerLink]="['/educations', education.id, 'edit']">Edit</a>
   }
 </div>

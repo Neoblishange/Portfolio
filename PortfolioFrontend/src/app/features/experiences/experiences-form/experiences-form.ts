@@ -70,22 +70,18 @@ export class ExperiencesForm {
   }
 
   protected readonly experienceForm = form(this.model, path => {
-    required(path.company, { message: "L'entreprise est requise" });
-    maxLength(path.company, 150, { message: '150 caractères maximum' });
-
-    required(path.position, { message: 'Le poste est requis' });
-    maxLength(path.position, 150, { message: '150 caractères maximum' });
-
-    maxLength(path.location, 150, { message: '150 caractères maximum' });
-
-    required(path.description, { message: 'La description est requise' });
-
-    required(path.startDate, { message: 'La date de début est requise' });
+    required(path.company, { message: 'Company is required' });
+    maxLength(path.company, 150, { message: 'Maximum 150 characters' });
+    required(path.position, { message: 'Position is required' });
+    maxLength(path.position, 150, { message: 'Maximum 150 characters' });
+    maxLength(path.location, 150, { message: 'Maximum 150 characters' });
+    required(path.description, { message: 'Description is required' });
+    required(path.startDate, { message: 'Start date is required' });
 
     validate(path.endDate, ({ value, valueOf }) => {
       const isCurrent = valueOf(path.current);
       if (!isCurrent && !value()) {
-        return { kind: 'required', message: 'La date de fin est requise si le poste n\'est plus actuel' };
+        return { kind: 'required', message: 'End date is required when this is no longer your current position' };
       }
       return null;
     });

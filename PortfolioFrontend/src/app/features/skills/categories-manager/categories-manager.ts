@@ -32,7 +32,7 @@ export class CategoriesManager {
   }
 
   protected onDelete(id: number): void {
-    if (!confirm('Supprimer cette catégorie ? Les skills associés seront aussi supprimés.')) {
+    if (!confirm('Delete this category? Its associated skills will also be deleted.')) {
       return;
     }
 

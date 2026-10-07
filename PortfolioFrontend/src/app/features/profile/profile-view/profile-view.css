@@ -19,6 +19,7 @@
 .pitch {
   margin-top: 1.5rem;
   max-width: 700px;
+  text-align: justify;
 }
 
 .contact {

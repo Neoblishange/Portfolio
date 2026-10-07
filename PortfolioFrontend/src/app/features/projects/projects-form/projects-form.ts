@@ -85,18 +85,14 @@ export class ProjectsForm {
   }
 
   protected readonly projectForm = form(this.model, path => {
-    required(path.title, { message: 'Le titre est requis' });
-    minLength(path.title, 3, { message: '3 caractères minimum' });
-    maxLength(path.title, 150, { message: '150 caractères maximum' });
-
-    required(path.slug, { message: 'Le slug est requis' });
-    maxLength(path.slug, 150, { message: '150 caractères maximum' });
-
-    required(path.shortDescription, { message: 'La short description est requise' });
-
-    required(path.description, { message: 'La description est requise' });
-
-    required(path.startDate, { message: 'La date de début est requise' });
+    required(path.title, { message: 'Title is required' });
+    minLength(path.title, 3, { message: 'Minimum 3 characters' });
+    maxLength(path.title, 150, { message: 'Maximum 150 characters' });
+    required(path.slug, { message: 'Slug is required' });
+    maxLength(path.slug, 150, { message: 'Maximum 150 characters' });
+    required(path.shortDescription, { message: 'Short description is required' });
+    required(path.description, { message: 'Description is required' });
+    required(path.startDate, { message: 'Start date is required' });
   });
 
   protected async onSubmit(): Promise<void> {

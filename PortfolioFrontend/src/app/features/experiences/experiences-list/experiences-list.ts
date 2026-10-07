@@ -1,12 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
 import { ExperiencesApi } from '../data-access/experiences-api';
 
 @Component({
   selector: 'app-experiences-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './experiences-list.html',
   styleUrl: './experiences-list.css'
 })
@@ -18,7 +17,7 @@ export class ExperiencesList {
   });
 
   protected onDelete(id: number): void {
-    if (!confirm('Supprimer cette expérience ?')) {
+    if (!confirm('Delete this experience?')) {
       return;
     }
 

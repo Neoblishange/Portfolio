@@ -1,21 +1,21 @@
 <div class="skills-detail">
   @if (skillResource.isLoading()) {
-    <p>Chargement...</p>
+    <p>Loading...</p>
   }
 
   @if (skillResource.error()) {
-    <p class="error">Impossible de charger ce skill.</p>
+    <p class="error">Unable to load this skill.</p>
   }
 
   @if (skillResource.value(); as skill) {
-    <a routerLink="/skills">← Retour à la liste</a>
+    <a routerLink="/skills">← Back to skills list</a>
 
     <h1>{{ skill.name }}</h1>
-    <p class="category">Catégorie : {{ skill.category.name }}</p>
+    <p class="category">Category: {{ skill.category.name }}</p>
     @if (skill.level) {
-      <p class="level">Niveau : {{ skill.level }}</p>
+      <p class="level">Level: {{ skill.level }}</p>
     }
 
-    <a [routerLink]="['/skills', skill.id, 'edit']">Modifier</a>
+    <a [routerLink]="['/skills', skill.id, 'edit']">Edit</a>
   }
 </div>

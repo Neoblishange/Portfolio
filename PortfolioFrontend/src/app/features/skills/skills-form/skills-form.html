@@ -1,8 +1,8 @@
 <form (submit)="$event.preventDefault(); onSubmit()">
-  <h1>{{ isEditMode() ? 'Modifier le skill' : 'Nouveau skill' }}</h1>
+  <h1>{{ isEditMode() ? 'Edit skill' : 'New skill' }}</h1>
 
   <label>
-    Nom
+    Name
     <input type="text" [formField]="skillForm.name" />
   </label>
   @if (skillForm.name().touched() && skillForm.name().invalid()) {
@@ -12,17 +12,17 @@
   }
 
   <label>
-    Niveau
-    <input type="text" [formField]="skillForm.level" placeholder="ex: Avancé, 3 ans..." />
+    Level
+    <input type="text" [formField]="skillForm.level" placeholder="e.g. Advanced, 3 years..." />
   </label>
 
   <label>
-    Catégorie
+    Category
     <select
       [value]="model().categoryId"
       (change)="onCategoryChange($any($event.target).value)"
     >
-      <option [value]="0" disabled>-- Choisir une catégorie --</option>
+      <option [value]="0" disabled>-- Select a category --</option>
       @if (categoriesResource.value(); as categories) {
         @for (category of categories; track category.id) {
           <option [value]="category.id">{{ category.name }}</option>
@@ -37,11 +37,11 @@
   }
 
   <label>
-    Ordre d'affichage
+    Display order
     <input type="number" [formField]="skillForm.displayOrder" />
   </label>
 
   <button type="submit" [disabled]="skillForm().invalid() || skillForm().submitting()">
-    {{ isEditMode() ? 'Mettre à jour' : 'Créer' }}
+    {{ isEditMode() ? 'Update' : 'Create' }}
   </button>
 </form>

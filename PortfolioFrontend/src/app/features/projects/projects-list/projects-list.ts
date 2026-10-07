@@ -1,12 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
 import { ProjectsApi } from '../data-access/projects-api';
 
 @Component({
   selector: 'app-projects-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './projects-list.html',
   styleUrl: './projects-list.css'
 })
@@ -19,7 +18,7 @@ export class ProjectsList {
 
   /*
   protected onDelete(id: number): void {
-    if (!confirm('Supprimer ce projet ?')) {
+    if (!confirm('Delete this project?')) {
       return;
     }
 

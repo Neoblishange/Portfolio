@@ -1,22 +1,22 @@
 <div class="educations-list">
   <!--
   <header>
-    <h1>Formations</h1>
-    <a routerLink="new">+ Nouvelle formation</a>
+    <h1>Education</h1>
+    <a routerLink="new">+ Add education</a>
   </header>
   -->
 
   @if (educationsResource.isLoading()) {
-    <p class="status">Chargement...</p>
+    <p class="status">Loading...</p>
   }
 
   @if (educationsResource.error()) {
-    <p class="status status--error">Une erreur est survenue lors du chargement des formations.</p>
+    <p class="status status--error">An error occurred while loading education.</p>
   }
 
   @if (educationsResource.value(); as educations) {
     @if (educations.length === 0) {
-      <p class="status">Aucune formation pour le moment.</p>
+      <p class="status">No education yet.</p>
     }
 
     <ol class="timeline">
@@ -42,8 +42,8 @@
             }
           </div>
           <!--
-          <a [routerLink]="[education.id, 'edit']">Modifier</a>
-          <button (click)="onDelete(education.id)">Supprimer</button>
+          <a [routerLink]="[education.id, 'edit']">Edit</a>
+          <button (click)="onDelete(education.id)">Delete</button>
           -->
         </li>
       }

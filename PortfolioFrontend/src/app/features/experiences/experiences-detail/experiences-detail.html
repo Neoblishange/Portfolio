@@ -1,14 +1,14 @@
 <div class="experiences-detail">
   @if (experienceResource.isLoading()) {
-    <p>Chargement...</p>
+    <p>Loading...</p>
   }
 
   @if (experienceResource.error()) {
-    <p class="error">Impossible de charger cette expérience.</p>
+    <p class="error">Unable to load this experience.</p>
   }
 
   @if (experienceResource.value(); as experience) {
-    <a routerLink="/experiences">← Retour à la liste</a>
+    <a routerLink="/experiences">← Back to experience list</a>
 
     <h1>{{ experience.position }}</h1>
     <h2>{{ experience.company }}</h2>
@@ -19,7 +19,7 @@
     <p class="dates">
       {{ experience.startDate }} →
       @if (experience.current) {
-        Aujourd'hui
+        Present
       } @else {
         {{ experience.endDate }}
       }
@@ -27,6 +27,6 @@
 
     <p>{{ experience.description }}</p>
 
-    <a [routerLink]="['/experiences', experience.id, 'edit']">Modifier</a>
+    <a [routerLink]="['/experiences', experience.id, 'edit']">Edit</a>
   }
 </div>

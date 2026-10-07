@@ -1,24 +1,24 @@
 <div class="interests-manager">
   <!--
-  <h1>Centres d'intérêt</h1>
+  <h1>Interests</h1>
 
   <form (submit)="$event.preventDefault(); onAdd()">
     <input
       type="text"
-      placeholder="Nouveau centre d'intérêt"
+      placeholder="Add an interest"
       [value]="newDescription()"
       (input)="newDescription.set($any($event.target).value)"
     />
-    <button type="submit">Ajouter</button>
+    <button type="submit">Add</button>
   </form>
   -->
 
   @if (interestsResource.isLoading()) {
-    <p class="status">Chargement...</p>
+    <p class="status">Loading...</p>
   }
 
   @if (interestsResource.error()) {
-    <p class="status status--error">Erreur lors du chargement des centres d'intérêt.</p>
+    <p class="status status--error">An error occurred while loading interests.</p>
   }
 
   @if (interestsResource.value(); as interests) {
@@ -26,7 +26,7 @@
       @for (interest of interests; track interest.id) {
         <li class="interests-list__item">
           {{ interest.description }}
-          <!-- <button (click)="onDelete(interest.id)">Supprimer</button> -->
+          <!-- <button (click)="onDelete(interest.id)">Delete</button> -->
         </li>
       }
     </ul>

@@ -1,36 +1,88 @@
-/* You can add global styles to this file, and also import other style files */
 :root {
-  --ink: #1c231f;
-  --paper: #eef0ea;
-  --paper-raised: #e4e6dd;
-  --line: #cfd2c5;
-  --accent: #a8722f;
-  --muted: #5b6058;
+  color-scheme: dark;
+  --ink: #e8edf7;
+  --paper: #0b1020;
+  --paper-raised: #111a2d;
+  --surface: #141f35;
+  --line: #263550;
+  --accent: #54e1d2;
+  --accent-soft: #a99cff;
+  --muted: #9aa9c1;
+  --danger: #ff8292;
 
-  --font-serif: 'IBM Plex Serif', Georgia, serif;
+  --font-serif: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-padding-top: 5rem;
+}
+
 body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--font-sans);
+  font-family: var(--font-sans), serif;
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3 {
-  font-family: var(--font-serif);
-  font-weight: 500;
+  font-family: var(--font-sans), serif;
+  font-weight: 600;
   margin: 0;
+  letter-spacing: -0.035em;
 }
 
 a {
   color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: var(--paper-raised);
+  color: var(--ink);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted);
+}
+
+button {
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--accent) 12%, var(--paper-raised));
+  color: var(--accent);
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+button:hover {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+:where(.status--error, .error) {
+  color: var(--danger);
 }
 
 :focus-visible {
@@ -39,7 +91,9 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation: none !important;
     transition: none !important;
   }

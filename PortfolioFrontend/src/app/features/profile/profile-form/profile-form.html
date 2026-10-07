@@ -1,8 +1,8 @@
 <form (submit)="$event.preventDefault(); onSubmit()">
-  <h1>Modifier le profil</h1>
+  <h1>Edit profile</h1>
 
   <label>
-    Firstname
+    First name
     <input type="text" [formField]="profileForm.firstName" />
   </label>
   @if (profileForm.firstName().touched() && profileForm.firstName().invalid()) {
@@ -12,7 +12,7 @@
   }
 
   <label>
-    Lastname
+    Last name
     <input type="text" [formField]="profileForm.lastName" />
   </label>
   @if (profileForm.lastName().touched() && profileForm.lastName().invalid()) {
@@ -32,7 +32,7 @@
   }
 
   <label>
-    Mobile
+    Phone
     <input type="tel" [formField]="profileForm.phone" />
   </label>
 
@@ -57,7 +57,7 @@
   </label>
 
   <label>
-    Pitch
+    Summary
     <textarea [formField]="profileForm.pitch"></textarea>
   </label>
   @if (profileForm.pitch().touched() && profileForm.pitch().invalid()) {
@@ -67,7 +67,7 @@
   }
 
   <label>
-    Experience years
+    Years of experience
     <input type="number" [formField]="profileForm.yearsOfExperience" />
   </label>
 

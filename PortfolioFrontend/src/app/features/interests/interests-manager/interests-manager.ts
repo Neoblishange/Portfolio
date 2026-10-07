@@ -32,7 +32,7 @@ export class InterestsManager {
   }
 
   protected onDelete(id: number): void {
-    if (!confirm('Supprimer ce centre d\'intérêt ?')) {
+    if (!confirm('Delete this interest?')) {
       return;
     }
 

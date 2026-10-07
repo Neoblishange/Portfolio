@@ -1,14 +1,14 @@
 <div class="projects-list">
   @if (projectsResource.isLoading()) {
-    <p class="status">Chargement...</p>
+    <p class="status">Loading...</p>
   }
 
   @if (projectsResource.error()) {
-    <p class="status status--error">Une erreur est survenue lors du chargement des projets.</p>
+    <p class="status status--error">An error occurred while loading projects.</p>
   }
 
   @if (projectsResource.hasValue() && projectsResource.value().length === 0) {
-    <p class="status">Aucun projet pour le moment.</p>
+    <p class="status">No projects yet.</p>
   }
 
   @if (projectsResource.hasValue()) {
@@ -31,8 +31,8 @@
 
           <!--
           <a [routerLink]="[project.id]">{{ project.title }}</a>
-          <a [routerLink]="[project.id, 'edit']">Modifier</a>
-          <button (click)="onDelete(project.id)">Supprimer</button>
+          <a [routerLink]="[project.id, 'edit']">Edit</a>
+          <button (click)="onDelete(project.id)">Delete</button>
           -->
         </li>
       }

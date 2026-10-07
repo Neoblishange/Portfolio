@@ -70,26 +70,19 @@ export class ProfileForm {
   }
 
   protected readonly profileForm = form(this.model, path => {
-    required(path.firstName, { message: 'Le prénom est requis' });
-    maxLength(path.firstName, 100, { message: '100 caractères maximum' });
-
-    required(path.lastName, { message: 'Le nom est requis' });
-    maxLength(path.lastName, 100, { message: '100 caractères maximum' });
-
-    required(path.jobTitle, { message: 'Le titre du poste est requis' });
-    maxLength(path.jobTitle, 150, { message: '150 caractères maximum' });
-
-    maxLength(path.phone, 30, { message: '30 caractères maximum' });
-
-    required(path.email, { message: "L'email est requis" });
-    maxLength(path.email, 255, { message: '255 caractères maximum' });
-
-    maxLength(path.linkedinUrl, 500, { message: '500 caractères maximum' });
-    maxLength(path.githubUrl, 500, { message: '500 caractères maximum' });
-
-    required(path.pitch, { message: 'Le pitch est requis' });
-
-    required(path.yearsOfExperience, { message: "Le nombre d'années d'expérience est requis" });
+    required(path.firstName, { message: 'First name is required' });
+    maxLength(path.firstName, 100, { message: 'Maximum 100 characters' });
+    required(path.lastName, { message: 'Last name is required' });
+    maxLength(path.lastName, 100, { message: 'Maximum 100 characters' });
+    required(path.jobTitle, { message: 'Job title is required' });
+    maxLength(path.jobTitle, 150, { message: 'Maximum 150 characters' });
+    maxLength(path.phone, 30, { message: 'Maximum 30 characters' });
+    required(path.email, { message: 'Email is required' });
+    maxLength(path.email, 255, { message: 'Maximum 255 characters' });
+    maxLength(path.linkedinUrl, 500, { message: 'Maximum 500 characters' });
+    maxLength(path.githubUrl, 500, { message: 'Maximum 500 characters' });
+    required(path.pitch, { message: 'Summary is required' });
+    required(path.yearsOfExperience, { message: 'Years of experience is required' });
   });
 
   protected onAvailabilityChange(value: string): void {
