@@ -17,7 +17,7 @@ spring:
 
 app:
   data:
-    file: ${PORTFOLIO_DATA_FILE:/app/data/portfolio-data.json}
+    file: ${PORTFOLIO_DATA_FILE:${user.dir}/data/portfolio-data.json}
 
   admin:
     username: ${ADMIN_USERNAME:admin}
