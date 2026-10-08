@@ -1,4 +1,4 @@
-My portfolio currently deployed on AWS, still in progress : http://13.60.55.204/
+My portfolio currently deployed on AWS, still in progress : https://florent-sor.fr/
 
 # Full-Stack Developer Portfolio (WIP)
 
