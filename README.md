@@ -1,569 +1,235 @@
-My portfolio currently deployed on AWS, still in progress : https://florent-sor.fr/
+# Florent Sor — Full-Stack Developer Portfolio
 
-# Full-Stack Developer Portfolio (WIP)
+**Live portfolio:** [florent-sor.fr](https://florent-sor.fr/)  
+**Project status:** In progress
 
-A production-oriented personal portfolio built as a full-stack web application.
+A full-stack personal portfolio built with Angular, Spring Boot and PostgreSQL. The public site presents professional experience, education, projects, skills and interests. A REST API supplies portfolio content and provides authenticated endpoints for managing it.
 
-The project goes beyond a traditional static portfolio: it provides a public-facing website, a secured administration area, persistent content management, caching, event-driven processing, automated testing and deployment.
+## Features
 
-The application is designed to demonstrate practical skills in **Java, Spring Boot, Angular, TypeScript, PostgreSQL, Docker, AWS, Redis ** through a single coherent architecture.
+- Single-page portfolio with profile information and sections for experience, education, projects, skills and interests.
+- Angular clients that retrieve portfolio data from the REST API.
+- Spring Boot REST endpoints for profile, projects, skills, skill categories, experience, education and interests.
+- CRUD operations for portfolio resources, protected by backend authentication and authorization rules.
+- Admin login that issues a signed JWT.
+- PostgreSQL persistence with JPA/Hibernate.
+- Optional initial content import from a JSON file when the database is empty.
+- OpenAPI documentation served by the backend.
+- Docker Compose setup for the database, API and static Angular site.
 
----
+The project is actively being developed. Although backend management endpoints and frontend management components exist, the Angular router currently enables only the home page; the resource-specific routes are present but commented out. There is no contact-submission API or Redis integration in the current implementation.
 
-## Overview
+## Technology stack
 
-The application provides two main areas:
+| Area | Technologies |
+| --- | --- |
+| Frontend | Angular 22, TypeScript, RxJS |
+| Backend | Java 25, Spring Boot 4, Spring Security |
+| API | REST, JSON, OpenAPI/Swagger UI |
+| Database | PostgreSQL, Spring Data JPA, Hibernate |
+| Authentication | RSA-signed JWT bearer tokens |
+| Frontend tests | Vitest through Angular CLI |
+| Containers | Docker, Docker Compose, Nginx |
 
-### Public website
-
-Visitors can:
-
-* View personal information and professional profile
-* Browse projects
-* View technical skills
-* Explore professional experience
-* Access external project resources
-* Submit a contact request
-
-### Administration area
-
-The administrator can:
-
-* Authenticate securely
-* Create, update and delete projects
-* Manage skills and professional experience
-* Manage articles
-* Manage profile
-* Manage interests
-* Manage education
-* Review contact messages
-* Manage portfolio content without modifying the frontend source code
-
-The portfolio is therefore both a **personal presentation website** and a demonstration of a complete software architecture.
-
----
-
-# Architecture
+## Architecture
 
 ```text
-                         ┌──────────────────────┐
-                         │       Visitors       │
-                         │      / Recruiters    │
-                         └──────────┬───────────┘
-                                    │
-                                  HTTPS
-                                    │
-                                    ▼
-                       ┌──────────────────────────┐
-                       │   Angular + TypeScript   │
-                       │                          │
-                       │     Public Portfolio     │
-                       │    Administration UI     │
-                       └────────────┬─────────────┘
-                                    │
-                               REST / JSON
-                                    │
-                                    ▼
-                ┌────────────────────────────────────────┐
-                │          Java / Spring Boot            │
-                │                                        │
-                │                REST API                │
-                │                                        │
-                │   Controller → Service → Repository    │
-                └────────────────────┬───────────────────┘
-                                     │
-                     ┌───────────────┼
-                     │               │              
-                     ▼               ▼              
-              ┌─────────────┐ ┌─────────────┐ 
-              │ PostgreSQL  │ │    Redis    │ 
-              │             │ │             │ 
-              │ Persistence │ │    Cache    │ 
-              └─────────────┘ └─────────────┘ 
-
-                ┌────────────────────────────────────────┐
-                │ Infrastructure                         │
-                │                                        │
-                │ Docker → CI/CD → AWS                   │
-                │ Logs → Monitoring → HTTPS              │
-                └────────────────────────────────────────┘
-```
-
-The architecture is intentionally progressive: the core application remains a conventional Spring Boot application, while specialized technologies are introduced only where they provide a clear architectural benefit.
-
----
-
-# Technology Stack
-
-| Layer             | Technology                                  |
-| ----------------- | ------------------------------------------- |
-| Frontend          | Angular 22                                  |
-| Frontend language | TypeScript                                  |
-| Backend           | Java 25 LTS                                 |
-| Backend framework | Spring Boot                                 |
-| Build tool        | Maven                                       |
-| API               | REST / JSON                                 |
-| Persistence       | PostgreSQL                                  |
-| ORM               | Spring Data JPA / Hibernate                 |
-| Validation        | Jakarta Validation                          |
-| Cache             | Redis                                       |
-| Testing           | Spring Boot Test / JUnit                    |
-| Containerization  | Docker                                      |
-| CI/CD             | GitHub Actions                              |
-| Cloud             | AWS                                         |
-| Monitoring        | Application and infrastructure logs/metrics |
-
----
-
-# Backend Architecture
-
-The Java backend is the central component of the application.
-
-It follows a layered architecture that separates HTTP handling, business logic, persistence and data transfer.
-
-```text
-                         REST Request
-                              │
-                              ▼
-                     ┌──────────────────┐
-                     │    Controller    │
-                     │                  │
-                     │    HTTP / REST   │
-                     └────────┬─────────┘
-                              │
-                              ▼
-                     ┌──────────────────┐
-                     │     Service      │
-                     │                  │
-                     │  Business Logic  │
-                     └────────┬─────────┘
-                              │
-                              ▼
-                     ┌──────────────────┐
-                     │    Repository    │
-                     │                  │
-                     │    Data Access   │
-                     └────────┬─────────┘
-                              │
-                              ▼
-                          PostgreSQL
-```
-
-## Package structure
-
-```text
-com.neoblishange.portfolio
-│
-├── controller/
-│
-├── service/
-│
-├── repository/
-│
-├── entity/
-│
-├── dto/
-│
-├── mapper/
-│
-├── exception/
-│
-├── security/
-│
-├── config/
-│
-└── PortfolioApplication.java
-```
-
-### Controller
-
-Controllers expose the REST API and handle HTTP concerns.
-
-They are responsible for:
-
-* Receiving HTTP requests
-* Validating request parameters
-* Calling application services
-* Returning appropriate HTTP responses
-
-Controllers do not contain business logic.
-
-### Service
-
-Services contain the application's business logic.
-
-They coordinate operations such as:
-
-* Creating and updating portfolio content
-* Applying business rules
-* Coordinating repositories
-* Triggering asynchronous operations
-* Interacting with external services
-
-Keeping business logic in services prevents controllers from becoming tightly coupled to application rules.
-
-### Repository
-
-Repositories handle persistence through Spring Data JPA.
-
-They abstract database access from the business layer and provide operations such as:
-
-* Finding entities
-* Saving entities
-* Updating entities
-* Deleting entities
-* Executing custom queries
-
-### Entity
-
-Entities represent the persistence model used by JPA/Hibernate.
-
-They map Java objects to PostgreSQL tables.
-
-### DTO
-
-Data Transfer Objects define the data exchanged through the REST API.
-
-DTOs deliberately separate the external API contract from the internal persistence model.
-
-For example:
-
-```text
-     HTTP Request
-          │
-          ▼
- CreateProjectRequest
-          │
-          ▼
-        Mapper
-          │
-          ▼
-       Project
-          │
-          ▼
-      PostgreSQL
-```
-
-This prevents database entities from becoming the public API contract.
-
-### Exception handling
-
-A centralized exception handling mechanism provides consistent HTTP error responses.
-
-Examples include:
-
-```text
-400 Bad Request
-404 Not Found
-401 Unauthorized
-403 Forbidden
-500 Internal Server Error
-```
-
----
-
-# Frontend Architecture
-
-The frontend is implemented with **Angular and TypeScript**.
-
-Its responsibilities include:
-
-* Rendering the public portfolio
-* Communicating with the REST API
-* Managing administration interfaces
-* Handling client-side navigation
-* Managing forms and validation
-* Presenting API errors appropriately
-
-The frontend does not directly access PostgreSQL.
-
-```text
-         Angular
-            │
-            │ HTTP / JSON
-            │
-            ▼
-   Spring Boot REST API
-            │
-            ▼
-        PostgreSQL
-```
-
-This keeps the frontend independent of the persistence layer.
-
----
-
-# Data Architecture
-
-PostgreSQL is the primary source of persistent application data.
-
-Typical entities include:
-
-```text
-Project
-Experience
-Skill
-ContactMessage
-User
-Profile
-Interest
-Education
-```
-
-The database is accessed exclusively through the Java backend.
-
-```text
-          Angular
-             │
-             │ REST
-             │
-             ▼
-        Spring Boot
-             │
-             │ JPA / Hibernate
-             │
-             ▼
-         PostgreSQL
-```
-
-This separation provides a clear security boundary and prevents clients from accessing the database directly.
-
----
-
-# Authentication and Security
-
-The administration area is protected by Spring Security.
-
-The public portfolio remains accessible without authentication, while administrative operations require an authenticated user.
-
-Conceptually:
-
-```text
-Public API
-    │
-    ├── GET projects
-    ├── GET skills
-    ├── GET experience
-    ├── POST contact
-    └──...      
-Admin API
-    │
-    ├── Authentication
-    ├── Project management
-    ├── Skill management
-    ├── Contact management
-    └──...
-```
-
-Security is handled at the backend rather than relying exclusively on frontend restrictions.
-
----
-
-# Caching with Redis
-
-Redis is used as a high-speed cache for data that is expensive or unnecessary to retrieve repeatedly.
-
-For example:
-
-```text
-Angular
+Visitors
+   │
+   │ https://florent-sor.fr
+   ▼
+DNS + HTTPS
    │
    ▼
-Spring Boot
+AWS deployment
    │
-   ├── Cache hit  ─────► Redis
-   │
-   └── Cache miss ─────► PostgreSQL
+   ├── Angular app served by Nginx
+   │        │ /api/*
+   │        ▼
+   ├── Spring Boot REST API
+   │        │
+   │        ▼
+   └── PostgreSQL
 ```
 
-Potential cache candidates include:
+The portfolio is deployed on AWS and accessed through the `florent-sor.fr` domain over HTTPS. DNS directs visitors to the hosted application. The Angular frontend is served by Nginx, which forwards `/api` requests to the Spring Boot backend; the frontend and API exchange JSON, while the backend accesses PostgreSQL. The API follows a layered structure: controllers handle HTTP requests, services contain application logic, repositories access persisted entities, and DTOs/mappers define the API representation.
 
-* Public project lists
-* Skills
-* Frequently requested portfolio content
-* Temporary application data
-
-PostgreSQL remains the source of truth.
-
-Redis is therefore an optimization layer, not the primary database.
-
----
-
-# Infrastructure
-
-The application is containerized using Docker.
-
-A typical deployment consists of independent services:
+## Repository layout
 
 ```text
-┌───────────────────────────────────────────────┐
-│                     AWS                       │
-│                                               │
-│  ┌─────────────┐     ┌───────────────┐        │
-│  │   Angular   │     │  Spring Boot  │        │
-│  │  Container  │     │   Container   │        │
-│  └─────────────┘     └───────┬───────┘        │
-│                              │                │
-│                 ┌────────────┼                │
-│                 ▼            ▼                │
-│            PostgreSQL      Redis              │
-│                                               │
-└───────────────────────────────────────────────┘
+.
+├── PortfolioBackend/
+│   ├── src/main/java/com/neoblishange/portfolio/
+│   │   ├── config/       # Security, startup initialization and configuration
+│   │   ├── controller/   # REST endpoints
+│   │   ├── dto/          # Request and response models
+│   │   ├── entity/       # JPA entities
+│   │   ├── exception/    # API error handling
+│   │   ├── mapper/       # Entity/DTO mapping
+│   │   ├── repository/   # Spring Data repositories
+│   │   ├── security/     # JWT and user-detail handling
+│   │   └── service/      # Application logic
+│   ├── src/main/resources/application.yaml
+│   ├── Dockerfile
+│   └── pom.xml
+├── PortfolioFrontend/
+│   ├── src/app/features/ # Portfolio sections and resource components
+│   ├── public/           # Static assets
+│   ├── Dockerfile
+│   └── package.json
+└── docker-compose.yaml
 ```
 
-Docker provides reproducible environments between development, testing and production.
+## Requirements
 
----
+For local development:
 
-# CI/CD
+- Java 25
+- Node.js 24 and npm
+- PostgreSQL 18 (or a compatible PostgreSQL server)
+- OpenSSL, for generating a local RSA key pair
 
-The project uses automated CI/CD to validate and deploy changes.
+For the containerized setup, Docker Engine and the Docker Compose plugin are required.
 
-A typical pipeline is:
+## Configuration
 
-```text
-      Git Push
-         │
-         ▼
-   GitHub Actions
-         │
-         ├── Build
-         ├── Unit Tests
-         ├── Integration Tests
-         ├── Code Quality Checks
-         ├── Docker Build
-         │
-         ▼
-     Deployment
-         │
-         ▼
-        AWS
+The backend reads its settings from environment variables. Do not put real passwords or private keys in source control.
+
+| Variable | Purpose |
+| --- | --- |
+| `SPRING_DATASOURCE_URL` | JDBC URL for PostgreSQL; defaults to `jdbc:postgresql://localhost:5432/portfolio` |
+| `SPRING_DATASOURCE_USERNAME` | PostgreSQL username; defaults to `postgres` |
+| `SPRING_DATASOURCE_PASSWORD` | PostgreSQL password |
+| `ADMIN_USERNAME` | Username for the initial administrator; defaults to `admin` |
+| `ADMIN_PASSWORD` | Password for the initial administrator |
+| `APP_JWT_ISSUER` | JWT issuer; defaults to `portfolio-api` |
+| `APP_JWT_PRIVATE_KEY_PATH` | Path to the RSA private key in PKCS#8 PEM format |
+| `APP_JWT_PUBLIC_KEY_PATH` | Path to the matching RSA public key in X.509 PEM format |
+| `PORTFOLIO_DATA_FILE` | Optional override for the initial portfolio JSON file |
+
+The admin account is created on startup only if no admin user exists. Its password is stored using the configured password encoder. Access tokens expire after 10 minutes.
+
+### Create local JWT keys
+
+From the repository root, create an RSA key pair for local development. Keep the private key private and do not commit either key:
+
+```bash
+mkdir keys
+openssl genpkey -algorithm RSA -out keys/private-key.pem -pkeyopt rsa_keygen_bits:2048
+openssl pkey -in keys/private-key.pem -pubout -out keys/public-key.pem
 ```
 
-The goal is to make every change automatically testable and deployable.
+Docker Compose mounts `./keys` into the backend container at `/app/keys`. The corresponding key-path variables in the root `.env` file should therefore be `/app/keys/private-key.pem` and `/app/keys/public-key.pem`.
 
----
+### Initial portfolio data
 
-# Architectural Principles
+When all portfolio tables are empty, the backend imports profile, categories and skills, experience, education, interests and projects from the JSON file selected by `PORTFOLIO_DATA_FILE`. Without an override, the application looks for `data/portfolio-data.json` relative to its working directory. In Docker Compose, `./data` is mounted at `/app/data`, so provide `./data/portfolio-data.json` in the repository root. For a local backend run from `PortfolioBackend`, the default is `PortfolioBackend/data/portfolio-data.json`.
 
-The project follows several principles.
+The JSON properties and nested object structure are defined by the `PortfolioData` record in `PortfolioBackend/src/main/java/com/neoblishange/portfolio/config/PortfolioData.java`. Dates use ISO format (`YYYY-MM-DD`), and the profile `availability` value must be one of `AVAILABLE`, `NOT_AVAILABLE` or `OPEN_TO_OPPORTUNITIES`. The importer skips the import if any of the relevant portfolio tables already contains data; it does not merge or refresh an existing database.
 
-### Separation of concerns
+## Run with Docker Compose
 
-Each layer has a clearly defined responsibility.
+1. Create the JWT keys as described above.
+2. Create a root `.env` file with local-only values:
 
-```text
-Controller  → HTTP
-Service     → Business logic
-Repository  → Persistence
-Entity      → Database model
-DTO         → API contract
+```dotenv
+POSTGRES_PASSWORD=replace-with-a-local-database-password
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=replace-with-a-strong-local-password
+APP_JWT_ISSUER=portfolio-api
+APP_JWT_PRIVATE_KEY_PATH=/app/keys/private-key.pem
+APP_JWT_PUBLIC_KEY_PATH=/app/keys/public-key.pem
 ```
 
-### API-first communication
+3. Add `data/portfolio-data.json` using the structure described above.
+4. Build and start the services:
 
-The frontend and backend communicate through a documented REST API rather than sharing implementation details.
+   ```bash
+   docker compose up --build
+   ```
 
-### Database independence
+The services are available at:
 
-The frontend never accesses PostgreSQL directly.
+| Service | Local address |
+| --- | --- |
+| Angular site | <http://localhost:4200> |
+| Backend API | <http://localhost:8080> |
+| Swagger UI | <http://localhost:8080/swagger-ui/index.html> |
+| PostgreSQL | `localhost:5432` |
 
-### Specialized services
+Stop the containers with `docker compose down`. The named `postgres_data` volume is retained. Use `docker compose down -v` only if you intentionally want to delete the database volume and its contents.
 
-Redis is used for caching rather than replacing PostgreSQL.
+## Run locally without Docker
 
-### Progressive complexity
+Start PostgreSQL and create a database named `portfolio`. Set the backend environment variables, including the database password, admin credentials and JWT key paths, then run the backend from `PortfolioBackend`:
 
-The core application remains simple:
-
-```text
-Angular
-   ↓
-Spring Boot
-   ↓
-PostgreSQL
+```bash
+./mvnw spring-boot:run
 ```
 
-Additional infrastructure is introduced only when it solves a real problem:
+On Windows, use the wrapper script:
 
-```text
-Redis  → caching
-Docker → reproducible deployment
-AWS    → production hosting
+```powershell
+.\mvnw.cmd spring-boot:run
 ```
 
-This avoids adding technologies purely for demonstration purposes.
+The default frontend proxy forwards `/api` requests to `http://localhost:8080`. In another terminal:
 
----
-
-# Project Goals
-
-The project is designed to demonstrate practical knowledge of:
-
-* Java development
-* Spring Boot
-* REST API design
-* SQL and PostgreSQL
-* JPA / Hibernate
-* Clean backend architecture
-* Angular and TypeScript
-* Authentication and authorization
-* Automated testing
-* Docker
-* CI/CD
-* AWS deployment
-* Logging and monitoring
-* Redis caching
-* Event-driven architecture
-
-The final result is intended to be a **realistic production-oriented application**, rather than a collection of disconnected technology demos.
-
----
-
-# Final Architecture
-
-```text
-                              INTERNET
-                                  │
-                                HTTPS
-                                  │
-                                  ▼
-                        ┌───────────────────┐
-                        │   Angular / TS    │
-                        │                   │
-                        │ Portfolio + Admin │
-                        └─────────┬─────────┘
-                                  │
-                               REST API
-                                  │
-                                  ▼
-                    ┌────────────────────────────┐
-                    │   Java 25 / Spring Boot    │
-                    │                            │
-                    │ Controllers                │
-                    │ Services                   │
-                    │ Repositories               │
-                    │ DTOs / Mappers             │
-                    │ Security                   │
-                    └───────┬────────────┬───────┘
-                            │            │
-                 ┌──────────┘            └──────────┐
-                 ▼                                  ▼
-          ┌─────────────┐                    ┌─────────────┐
-          │  PostgreSQL │                    │    Redis    │
-          │             │                    │             │
-          │  Source of  │                    │    Cache    │
-          │    Truth    │                    │             │
-          └─────────────┘                    └─────────────┘                                              
-
-                   ┌──────────────────────────────┐
-                   │    Docker / GitHub Actions   │
-                   │                              │
-                   │ CI/CD / Testing / Deployment │
-                   └──────────────┬───────────────┘
-                                  │
-                                  ▼
-                                 AWS
+```bash
+cd PortfolioFrontend
+npm ci
+npm start
 ```
 
-The architecture combines a conventional **Java/Spring enterprise backend** with a modern **Angular frontend**, relational persistence, cloud infrastructure, caching and event-driven processing while maintaining clear separation of responsibilities between each component.
+Open <http://localhost:4200>. For local backend execution, point the JWT key-path variables to the generated key files on your machine. Set `PORTFOLIO_DATA_FILE` if the seed JSON is not at the backend's default `data/portfolio-data.json` path.
+
+## REST API overview
+
+All endpoints are prefixed with `/api`. Public `GET` requests are available for portfolio content. Create, update and delete operations for the resource collections require the `ADMIN` role.
+
+| Resource | Base path | Available operations |
+| --- | --- | --- |
+| Authentication | `/auth` | `POST /login` |
+| Profile | `/profile` | `GET`, `PUT` |
+| Projects | `/projects` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
+| Skill categories | `/categories` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
+| Skills | `/skills` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
+| Experience | `/experiences` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
+| Education | `/educations` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
+| Interests | `/interests` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
+
+The API schema and interactive endpoint documentation are available at `/swagger-ui/index.html` while the backend is running.
+
+To authenticate, send a `POST` request to `/api/auth/login` with the login request fields and use the returned token on protected requests:
+
+```http
+Authorization: Bearer <token>
+```
+
+The API is stateless and validates JWT signatures against the configured RSA public key. The current CORS configuration permits `http://localhost:4200` for local development.
+
+## Development commands
+
+From `PortfolioFrontend`:
+
+```bash
+npm start       # Start the Angular development server
+npm run build   # Create a production build in dist/
+npm test        # Run frontend unit tests
+```
+
+From `PortfolioBackend`:
+
+```bash
+./mvnw test
+./mvnw package
+```
+
+Use `.\mvnw.cmd` instead of `./mvnw` in Windows PowerShell.
+
+## Current implementation notes
+
+- Only the home route is enabled in the Angular router. Other feature routes are currently commented out while the application is being developed.
+- The current JPA configuration uses `ddl-auto: create`, which recreates the database schema at application startup. This can delete persisted content; change the schema-management strategy and validate migrations before using this setup with production data.
+- The application currently configures local-development CORS and default local ports. Review these settings, secrets, database lifecycle and deployment configuration before production use.
+- Redis, contact form handling, article management, CI/CD workflows and monitoring are not implemented in the current repository.
