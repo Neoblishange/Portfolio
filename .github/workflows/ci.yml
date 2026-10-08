@@ -98,28 +98,3 @@ jobs:
           tags: |
             ghcr.io/${{ env.IMAGE_OWNER }}/portfolio-frontend:latest
             ghcr.io/${{ env.IMAGE_OWNER }}/portfolio-frontend:${{ github.sha }}
-
-  deploy:
-    name: Deploy to AWS
-    runs-on: ubuntu-latest
-    needs:
-      - docker
-
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
-    environment:
-      name: production
-
-    steps:
-      - name: Deploy to AWS
-        uses: appleboy/ssh-action@v1.2.2
-        with:
-          host: ${{ secrets.AWS_HOST }}
-          username: ${{ secrets.AWS_USER }}
-          key: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
-          script: |
-            cd /home/ubuntu/portfolio
-            
-            docker compose -f docker-compose.prod.yml pull
-            docker compose -f docker-compose.prod.yml up -d
-            docker image prune -f
