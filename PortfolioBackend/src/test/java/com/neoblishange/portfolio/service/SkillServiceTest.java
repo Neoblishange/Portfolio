@@ -40,7 +40,6 @@ class SkillServiceTest {
     @Test
     void shouldReturnSkillWhenSkillExists() {
 
-        // Arrange
         Long id = 1L;
 
         Category category = new Category();
@@ -55,6 +54,7 @@ class SkillServiceTest {
         Skill skill = new Skill();
         skill.setId(id);
         skill.setName("Java");
+        skill.setFeatured(true);
         skill.setCategory(category);
         skill.setDisplayOrder(1);
 
@@ -62,8 +62,9 @@ class SkillServiceTest {
                 id,
                 "Java",
                 "1",
+                true,
                 categoryResponse,
-                null
+                1
         );
 
         when(skillRepository.findById(id))
@@ -72,11 +73,8 @@ class SkillServiceTest {
         when(skillMapper.toResponse(skill))
                 .thenReturn(response);
 
-        // Act
-        SkillResponseDTO result =
-                skillService.getSkillById(id);
+        SkillResponseDTO result = skillService.getSkillById(id);
 
-        // Assert
         assertNotNull(result);
         assertEquals(response, result);
 
@@ -87,13 +85,11 @@ class SkillServiceTest {
     @Test
     void shouldThrowResourceNotFoundExceptionWhenSkillDoesNotExist() {
 
-        // Arrange
         Long id = 999L;
 
         when(skillRepository.findById(id))
                 .thenReturn(Optional.empty());
 
-        // Act + Assert
         ResourceNotFoundException exception = assertThrows(
                 ResourceNotFoundException.class,
                 () -> skillService.getSkillById(id)
@@ -111,7 +107,6 @@ class SkillServiceTest {
     @Test
     void shouldReturnAllSkills() {
 
-        // Arrange
         Category category = new Category();
         category.setId(1L);
         category.setName("Backend");
@@ -124,27 +119,33 @@ class SkillServiceTest {
         Skill skill1 = new Skill();
         skill1.setId(1L);
         skill1.setName("Java");
+        skill1.setFeatured(true);
         skill1.setDisplayOrder(1);
+        skill1.setCategory(category);
 
         Skill skill2 = new Skill();
         skill2.setId(2L);
         skill2.setName("Spring Boot");
+        skill2.setFeatured(false);
         skill2.setDisplayOrder(2);
+        skill2.setCategory(category);
 
         SkillResponseDTO response1 = new SkillResponseDTO(
                 1L,
                 "Java",
                 "1",
+                true,
                 categoryResponse,
-                null
+                1
         );
 
         SkillResponseDTO response2 = new SkillResponseDTO(
                 2L,
                 "Spring Boot",
                 "2",
+                false,
                 categoryResponse,
-                null
+                2
         );
 
         when(skillRepository.findAll())
@@ -156,14 +157,10 @@ class SkillServiceTest {
         when(skillMapper.toResponse(skill2))
                 .thenReturn(response2);
 
-        // Act
-        List<SkillResponseDTO> result =
-                skillService.getAllSkills();
+        List<SkillResponseDTO> result = skillService.getAllSkills();
 
-        // Assert
         assertNotNull(result);
         assertEquals(2, result.size());
-
         assertEquals(response1, result.get(0));
         assertEquals(response2, result.get(1));
 
@@ -175,15 +172,11 @@ class SkillServiceTest {
     @Test
     void shouldReturnEmptyListWhenNoSkillExists() {
 
-        // Arrange
         when(skillRepository.findAll())
                 .thenReturn(List.of());
 
-        // Act
-        List<SkillResponseDTO> result =
-                skillService.getAllSkills();
+        List<SkillResponseDTO> result = skillService.getAllSkills();
 
-        // Assert
         assertNotNull(result);
         assertTrue(result.isEmpty());
 
@@ -194,12 +187,12 @@ class SkillServiceTest {
     @Test
     void shouldCreateSkillSuccessfully() {
 
-        // Arrange
         SkillRequestDTO request = new SkillRequestDTO(
                 "Java",
                 "1",
+                true,
                 1L,
-                null
+                1
         );
 
         Category category = new Category();
@@ -216,6 +209,8 @@ class SkillServiceTest {
         Skill savedSkill = new Skill();
         savedSkill.setId(1L);
         savedSkill.setName("Java");
+        savedSkill.setLevel("1");
+        savedSkill.setFeatured(true);
         savedSkill.setDisplayOrder(1);
         savedSkill.setCategory(category);
 
@@ -223,8 +218,9 @@ class SkillServiceTest {
                 1L,
                 "Java",
                 "1",
+                true,
                 categoryResponse,
-                null
+                1
         );
 
         when(categoryRepository.findById(1L))
@@ -239,11 +235,8 @@ class SkillServiceTest {
         when(skillMapper.toResponse(savedSkill))
                 .thenReturn(response);
 
-        // Act
-        SkillResponseDTO result =
-                skillService.createSkill(request);
+        SkillResponseDTO result = skillService.createSkill(request);
 
-        // Assert
         assertNotNull(result);
         assertEquals(response, result);
 
@@ -251,25 +244,22 @@ class SkillServiceTest {
         verify(skillMapper).toEntity(request);
         verify(skillRepository).save(skill);
         verify(skillMapper).toResponse(savedSkill);
-
         assertEquals(category, skill.getCategory());
     }
 
     @Test
     void shouldThrowResourceNotFoundExceptionWhenCreatingSkillWithNonExistingCategory() {
-
-        // Arrange
         SkillRequestDTO request = new SkillRequestDTO(
                 "Java",
                 "1",
+                true,
                 999L,
-                null
+                1
         );
 
         when(categoryRepository.findById(999L))
                 .thenReturn(Optional.empty());
 
-        // Act + Assert
         ResourceNotFoundException exception = assertThrows(
                 ResourceNotFoundException.class,
                 () -> skillService.createSkill(request)
@@ -281,7 +271,6 @@ class SkillServiceTest {
         );
 
         verify(categoryRepository).findById(999L);
-
         verifyNoInteractions(skillMapper);
         verifyNoInteractions(skillRepository);
     }
@@ -289,15 +278,15 @@ class SkillServiceTest {
     @Test
     void shouldUpdateSkillSuccessfully() {
 
-        // Arrange
         Long skillId = 1L;
         Long categoryId = 2L;
 
         SkillRequestDTO request = new SkillRequestDTO(
                 "Spring Boot",
                 "2",
+                true,
                 categoryId,
-                null
+                2
         );
 
         Category category = new Category();
@@ -305,21 +294,23 @@ class SkillServiceTest {
         category.setName("Backend");
 
         CategoryResponseDTO categoryResponse = new CategoryResponseDTO(
-                1L,
+                categoryId,
                 "Backend"
         );
 
         Skill skill = new Skill();
         skill.setId(skillId);
         skill.setName("Spring");
+        skill.setFeatured(false);
         skill.setDisplayOrder(1);
 
         SkillResponseDTO response = new SkillResponseDTO(
                 skillId,
                 "Spring Boot",
                 "2",
+                true,
                 categoryResponse,
-                null
+                2
         );
 
         when(categoryRepository.findById(categoryId))
@@ -331,11 +322,8 @@ class SkillServiceTest {
         when(skillMapper.toResponse(skill))
                 .thenReturn(response);
 
-        // Act
-        SkillResponseDTO result =
-                skillService.updateSkill(request, skillId);
+        SkillResponseDTO result = skillService.updateSkill(request, skillId);
 
-        // Assert
         assertNotNull(result);
         assertEquals(response, result);
 
@@ -343,28 +331,26 @@ class SkillServiceTest {
         verify(skillRepository).findById(skillId);
         verify(skillMapper).updateEntity(request, skill);
         verify(skillMapper).toResponse(skill);
-
         assertEquals(category, skill.getCategory());
     }
 
     @Test
     void shouldThrowResourceNotFoundExceptionWhenUpdatingSkillWithNonExistingCategory() {
 
-        // Arrange
         Long skillId = 1L;
         Long categoryId = 999L;
 
         SkillRequestDTO request = new SkillRequestDTO(
                 "Spring Boot",
                 "2",
+                true,
                 categoryId,
-                null
+                2
         );
 
         when(categoryRepository.findById(categoryId))
                 .thenReturn(Optional.empty());
 
-        // Act + Assert
         ResourceNotFoundException exception = assertThrows(
                 ResourceNotFoundException.class,
                 () -> skillService.updateSkill(request, skillId)
@@ -376,7 +362,6 @@ class SkillServiceTest {
         );
 
         verify(categoryRepository).findById(categoryId);
-
         verify(skillRepository, never()).findById(any());
         verify(skillMapper, never()).updateEntity(any(), any());
         verify(skillMapper, never()).toResponse(any());
@@ -385,15 +370,15 @@ class SkillServiceTest {
     @Test
     void shouldThrowResourceNotFoundExceptionWhenUpdatingNonExistingSkill() {
 
-        // Arrange
         Long skillId = 999L;
         Long categoryId = 1L;
 
         SkillRequestDTO request = new SkillRequestDTO(
                 "Spring Boot",
                 "2",
+                true,
                 categoryId,
-                null
+                2
         );
 
         Category category = new Category();
@@ -405,7 +390,6 @@ class SkillServiceTest {
         when(skillRepository.findById(skillId))
                 .thenReturn(Optional.empty());
 
-        // Act + Assert
         ResourceNotFoundException exception = assertThrows(
                 ResourceNotFoundException.class,
                 () -> skillService.updateSkill(request, skillId)
@@ -418,7 +402,6 @@ class SkillServiceTest {
 
         verify(categoryRepository).findById(categoryId);
         verify(skillRepository).findById(skillId);
-
         verify(skillMapper, never()).updateEntity(any(), any());
         verify(skillMapper, never()).toResponse(any());
     }
@@ -426,13 +409,10 @@ class SkillServiceTest {
     @Test
     void shouldDeleteSkillSuccessfully() {
 
-        // Arrange
         Long id = 1L;
 
-        // Act
         skillService.deleteSkill(id);
 
-        // Assert
         verify(skillRepository).deleteById(id);
     }
 }

@@ -3,6 +3,8 @@ package com.neoblishange.portfolio.service;
 import com.neoblishange.portfolio.dto.project.ProjectRequestDTO;
 import com.neoblishange.portfolio.dto.project.ProjectResponseDTO;
 import com.neoblishange.portfolio.entity.project.Project;
+import com.neoblishange.portfolio.entity.project.ProjectContext;
+import com.neoblishange.portfolio.entity.project.ProjectType;
 import com.neoblishange.portfolio.exception.ResourceAlreadyExistsException;
 import com.neoblishange.portfolio.exception.ResourceNotFoundException;
 import com.neoblishange.portfolio.mapper.ProjectMapper;
@@ -34,7 +36,6 @@ public class ProjectServiceTest {
 
     @Test
     public void shouldReturnProjectWhenProjectExists() {
-        // Arrange
         Long id = 1L;
         Project project = new Project();
         project.setId(id);
@@ -43,10 +44,14 @@ public class ProjectServiceTest {
                 id,
                 "Portfolio",
                 "portfolio",
+                ProjectType.WEB,
+                List.of(ProjectContext.PERSONAL),
                 "Personal developer portfolio",
                 List.of("Personal developer portfolio"),
+                List.of("Build portfolio"),
                 null,
                 LocalDate.of(2026, 1, 1),
+                null,
                 null
         );
 
@@ -56,10 +61,8 @@ public class ProjectServiceTest {
         when(projectMapper.toResponse(project))
                 .thenReturn(response);
 
-        // Act
         ProjectResponseDTO result = projectService.getProjectById(id);
 
-        // Assert
         assertNotNull(result);
         assertEquals(response, result);
 
@@ -70,13 +73,11 @@ public class ProjectServiceTest {
     @Test
     void shouldThrowResourceNotFoundExceptionWhenProjectDoesNotExist() {
 
-        // Arrange
         Long id = 999L;
 
         when(projectRepository.findById(id))
                 .thenReturn(Optional.empty());
 
-        // Act + Assert
         ResourceNotFoundException exception = assertThrows(
                 ResourceNotFoundException.class,
                 () -> projectService.getProjectById(id)
@@ -94,7 +95,6 @@ public class ProjectServiceTest {
     @Test
     void shouldReturnAllProjects() {
 
-        // Arrange
         Project project1 = new Project();
         project1.setId(1L);
         project1.setTitle("Portfolio");
@@ -107,10 +107,14 @@ public class ProjectServiceTest {
                 1L,
                 "Portfolio",
                 "portfolio",
+                ProjectType.WEB,
+                List.of(ProjectContext.PERSONAL),
                 "Personal developer portfolio",
                 List.of("My portfolio project"),
+                List.of("Build portfolio"),
                 null,
                 LocalDate.of(2026, 1, 1),
+                null,
                 null
         );
 
@@ -118,10 +122,14 @@ public class ProjectServiceTest {
                 2L,
                 "E-commerce",
                 "e-commerce",
+                ProjectType.WEB,
+                List.of(ProjectContext.PERSONAL),
                 "E-commerce application",
                 List.of("My e-commerce project"),
+                List.of("Build storefront"),
                 null,
                 LocalDate.of(2026, 2, 1),
+                null,
                 null
         );
 
@@ -134,19 +142,14 @@ public class ProjectServiceTest {
         when(projectMapper.toResponse(project2))
                 .thenReturn(response2);
 
-        // Act
-        List<ProjectResponseDTO> result =
-                projectService.getAllProjects();
+        List<ProjectResponseDTO> result = projectService.getAllProjects();
 
-        // Assert
         assertNotNull(result);
         assertEquals(2, result.size());
-
         assertEquals(response1, result.get(0));
         assertEquals(response2, result.get(1));
 
         verify(projectRepository).findAll();
-
         verify(projectMapper).toResponse(project1);
         verify(projectMapper).toResponse(project2);
     }
@@ -154,14 +157,11 @@ public class ProjectServiceTest {
     @Test
     void shouldReturnEmptyListWhenNoProjectExists() {
 
-        // Arrange
         when(projectRepository.findAll())
                 .thenReturn(List.of());
 
-        // Act
         List<ProjectResponseDTO> result = projectService.getAllProjects();
 
-        // Assert
         assertNotNull(result);
         assertTrue(result.isEmpty());
 
@@ -172,14 +172,17 @@ public class ProjectServiceTest {
     @Test
     void shouldCreateProjectSuccessfully() {
 
-        // Arrange
         ProjectRequestDTO request = new ProjectRequestDTO(
                 "Portfolio",
                 "portfolio",
+                ProjectType.WEB,
+                List.of(ProjectContext.PERSONAL),
                 "Personal developer portfolio",
                 List.of("My personal developer portfolio"),
+                List.of("Build portfolio"),
                 LocalDate.of(2026, 1, 1),
-                null
+                null,
+                List.of(1L)
         );
 
         Project project = new Project();
@@ -193,10 +196,14 @@ public class ProjectServiceTest {
                 1L,
                 "Portfolio",
                 "portfolio",
+                ProjectType.WEB,
+                List.of(ProjectContext.PERSONAL),
                 "Personal developer portfolio",
                 List.of("My personal developer portfolio"),
+                List.of("Build portfolio"),
                 null,
                 LocalDate.of(2026, 1, 1),
+                null,
                 null
         );
 
@@ -212,11 +219,8 @@ public class ProjectServiceTest {
         when(projectMapper.toResponse(savedProject))
                 .thenReturn(response);
 
-        // Act
-        ProjectResponseDTO result =
-                projectService.createProject(request);
+        ProjectResponseDTO result = projectService.createProject(request);
 
-        // Assert
         assertNotNull(result);
         assertEquals(response, result);
 
@@ -229,20 +233,22 @@ public class ProjectServiceTest {
     @Test
     void shouldThrowResourceAlreadyExistsExceptionWhenSlugAlreadyExists() {
 
-        // Arrange
         ProjectRequestDTO request = new ProjectRequestDTO(
                 "Portfolio",
                 "portfolio",
+                ProjectType.WEB,
+                List.of(ProjectContext.PERSONAL),
                 "Personal developer portfolio",
                 List.of("My personal developer portfolio"),
+                List.of("Build portfolio"),
                 LocalDate.of(2026, 1, 1),
-                null
+                null,
+                List.of(1L)
         );
 
         when(projectRepository.existsBySlug("portfolio"))
                 .thenReturn(true);
 
-        // Act + Assert
         ResourceAlreadyExistsException exception = assertThrows(
                 ResourceAlreadyExistsException.class,
                 () -> projectService.createProject(request)
@@ -254,7 +260,6 @@ public class ProjectServiceTest {
         );
 
         verify(projectRepository).existsBySlug("portfolio");
-
         verify(projectMapper, never()).toEntity(any());
         verify(projectRepository, never()).save(any());
         verify(projectMapper, never()).toResponse(any());
@@ -263,16 +268,19 @@ public class ProjectServiceTest {
     @Test
     void shouldUpdateProjectSuccessfully() {
 
-        // Arrange
         Long id = 1L;
 
         ProjectRequestDTO request = new ProjectRequestDTO(
                 "Updated Portfolio",
                 "updated-portfolio",
+                ProjectType.WEB,
+                List.of(ProjectContext.PERSONAL),
                 "Updated short description",
                 List.of("Updated description"),
+                List.of("Update portfolio"),
                 LocalDate.of(2026, 1, 1),
-                null
+                null,
+                List.of(1L)
         );
 
         Project project = new Project();
@@ -284,10 +292,14 @@ public class ProjectServiceTest {
                 id,
                 "Updated Portfolio",
                 "updated-portfolio",
+                ProjectType.WEB,
+                List.of(ProjectContext.PERSONAL),
                 "Updated short description",
                 List.of("Updated description"),
+                List.of("Update portfolio"),
                 null,
                 LocalDate.of(2026, 1, 1),
+                null,
                 null
         );
 
@@ -300,11 +312,8 @@ public class ProjectServiceTest {
         when(projectMapper.toResponse(project))
                 .thenReturn(response);
 
-        // Act
-        ProjectResponseDTO result =
-                projectService.updateProject(request, id);
+        ProjectResponseDTO result = projectService.updateProject(request, id);
 
-        // Assert
         assertNotNull(result);
         assertEquals(response, result);
 
@@ -317,22 +326,24 @@ public class ProjectServiceTest {
     @Test
     void shouldThrowResourceNotFoundExceptionWhenUpdatedProjectDoesNotExist() {
 
-        // Arrange
         Long id = 999L;
 
         ProjectRequestDTO request = new ProjectRequestDTO(
                 "Updated Portfolio",
                 "updated-portfolio",
+                ProjectType.WEB,
+                List.of(ProjectContext.PERSONAL),
                 "Updated short description",
                 List.of("Updated description"),
+                List.of("Update portfolio"),
                 LocalDate.of(2026, 1, 1),
-                null
+                null,
+                List.of(1L)
         );
 
         when(projectRepository.findById(id))
                 .thenReturn(Optional.empty());
 
-        // Act + Assert
         ResourceNotFoundException exception = assertThrows(
                 ResourceNotFoundException.class,
                 () -> projectService.updateProject(request, id)
@@ -344,30 +355,27 @@ public class ProjectServiceTest {
         );
 
         verify(projectRepository).findById(id);
-
-        verify(projectRepository, never())
-                .existsBySlug(any());
-
-        verify(projectMapper, never())
-                .updateEntity(any(), any());
-
-        verify(projectMapper, never())
-                .toResponse(any());
+        verify(projectRepository, never()).existsBySlug(any());
+        verify(projectMapper, never()).updateEntity(any(), any());
+        verify(projectMapper, never()).toResponse(any());
     }
 
     @Test
     void shouldThrowResourceAlreadyExistsExceptionWhenUpdatedSlugAlreadyExists() {
 
-        // Arrange
         Long id = 1L;
 
         ProjectRequestDTO request = new ProjectRequestDTO(
                 "E-commerce",
                 "ecommerce",
+                ProjectType.WEB,
+                List.of(ProjectContext.PERSONAL),
                 "E-commerce application",
                 List.of("My e-commerce project"),
+                List.of("Build storefront"),
                 LocalDate.of(2026, 1, 1),
-                null
+                null,
+                List.of(1L)
         );
 
         Project project = new Project();
@@ -381,7 +389,6 @@ public class ProjectServiceTest {
         when(projectRepository.existsBySlug("ecommerce"))
                 .thenReturn(true);
 
-        // Act + Assert
         ResourceAlreadyExistsException exception = assertThrows(
                 ResourceAlreadyExistsException.class,
                 () -> projectService.updateProject(request, id)
@@ -394,27 +401,26 @@ public class ProjectServiceTest {
 
         verify(projectRepository).findById(id);
         verify(projectRepository).existsBySlug("ecommerce");
-
-        verify(projectMapper, never())
-                .updateEntity(any(), any());
-
-        verify(projectMapper, never())
-                .toResponse(any());
+        verify(projectMapper, never()).updateEntity(any(), any());
+        verify(projectMapper, never()).toResponse(any());
     }
 
     @Test
     void shouldAllowProjectToKeepItsCurrentSlug() {
 
-        // Arrange
         Long id = 1L;
 
         ProjectRequestDTO request = new ProjectRequestDTO(
                 "Updated Portfolio",
                 "portfolio",
+                ProjectType.WEB,
+                List.of(ProjectContext.PERSONAL),
                 "Updated short description",
                 List.of("Updated description"),
+                List.of("Update portfolio"),
                 LocalDate.of(2026, 1, 1),
-                null
+                null,
+                List.of(1L)
         );
 
         Project project = new Project();
@@ -426,10 +432,14 @@ public class ProjectServiceTest {
                 id,
                 "Updated Portfolio",
                 "portfolio",
+                ProjectType.WEB,
+                List.of(ProjectContext.PERSONAL),
                 "Updated short description",
                 List.of("Updated description"),
+                List.of("Update portfolio"),
                 null,
                 LocalDate.of(2026, 1, 1),
+                null,
                 null
         );
 
@@ -442,17 +452,13 @@ public class ProjectServiceTest {
         when(projectMapper.toResponse(project))
                 .thenReturn(response);
 
-        // Act
-        ProjectResponseDTO result =
-                projectService.updateProject(request, id);
+        ProjectResponseDTO result = projectService.updateProject(request, id);
 
-        // Assert
         assertNotNull(result);
         assertEquals(response, result);
 
         verify(projectRepository).findById(id);
         verify(projectRepository).existsBySlug("portfolio");
-
         verify(projectMapper).updateEntity(request, project);
         verify(projectMapper).toResponse(project);
     }
@@ -460,13 +466,10 @@ public class ProjectServiceTest {
     @Test
     void shouldDeleteProjectSuccessfully() {
 
-        // Arrange
         Long id = 1L;
 
-        // Act
         projectService.deleteProject(id);
 
-        // Assert
         verify(projectRepository).deleteById(id);
     }
 }
