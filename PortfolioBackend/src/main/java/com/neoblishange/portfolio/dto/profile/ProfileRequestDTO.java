@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
+
 public record ProfileRequestDTO(
 
         @NotBlank
@@ -42,7 +44,7 @@ public record ProfileRequestDTO(
         @NotNull
         @Min(0)
         @Max(100)
-        Integer yearsOfExperience,
+        BigDecimal yearsOfExperience,
 
         @NotNull
         Availability availability

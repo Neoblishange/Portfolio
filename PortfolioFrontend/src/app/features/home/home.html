@@ -1,45 +1,5 @@
 <main id="top" class="home">
-  @if (profileResource.error()) {
-    <p class="status status--error">Unable to load the profile.</p>
-  }
-
-  @if (profileResource.value(); as profile) {
-    <header class="hero">
-      <div class="hero__content">
-        <p class="hero__eyebrow"><span class="hero__signal"></span> PORTFOLIO / PROFILE</p>
-        <h1 class="hero__name">{{ profile.firstName }} {{ profile.lastName }}</h1>
-        <p class="hero__role">{{ profile.jobTitle }}</p>
-        <p class="hero__pitch">{{ profile.pitch }}</p>
-
-        <dl class="hero__specs">
-          <div class="hero__spec">
-            <dt>Experience</dt>
-            <dd>{{ profile.yearsOfExperience }} years</dd>
-          </div>
-          <div class="hero__spec">
-            <dt>Contact</dt>
-            <dd class="hero__contact-links">
-              <a [href]="'mailto:' + profile.email">{{ profile.email }}</a>
-              @if (profile.phone) {
-                <a [href]="'tel:' + profile.phone">{{ profile.phone }}</a>
-              }
-            </dd>
-          </div>
-          <div class="hero__spec">
-            <dt>Networks</dt>
-            <dd class="hero__contact-links">
-              @if (profile.linkedinUrl) {
-                <a [href]="profile.linkedinUrl" target="_blank" rel="noopener">LinkedIn</a>
-              }
-              @if (profile.githubUrl) {
-                <a [href]="profile.githubUrl" target="_blank" rel="noopener">GitHub</a>
-              }
-            </dd>
-          </div>
-        </dl>
-      </div>
-    </header>
-  }
+  <app-profile-view />
 
   <nav class="home-nav" aria-label="Portfolio navigation">
     <a class="home-nav__brand" href="#top" aria-label="Back to top">FS<span>.</span></a>
@@ -95,6 +55,7 @@
 
   <footer class="home-footer">
     <span>END OF PROFILE</span>
+    <span>2026</span>
     <a href="#top">Back to top ↑</a>
   </footer>
 </main>

@@ -24,12 +24,13 @@
         <li class="timeline__item">
           <div class="timeline__marker"></div>
           <div class="timeline__body">
-            <p class="timeline__dates">
-              {{ education.startDate }}
+            <div class="timeline__dates">
+              <span class="timeline__date">{{ education.startDate }}</span>
               @if (education.endDate) {
-                - {{ education.endDate }}
+                <span class="timeline__date-arrow" aria-hidden="true">→</span>
+                <span class="timeline__date">{{ education.endDate }}</span>
               }
-            </p>
+            </div>
             <h3 class="timeline__role">{{ education.degree }}</h3>
             <p class="timeline__company">
               {{ education.schoolName }}

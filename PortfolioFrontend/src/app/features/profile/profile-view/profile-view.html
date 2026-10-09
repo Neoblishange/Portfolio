@@ -1,44 +1,62 @@
-  <div class="profile-view">
-  @if (profileResource.isLoading()) {
-    <p class="status">Loading...</p>
-  }
+@if (profileResource.isLoading()) {
+  <p class="status">Loading...</p>
+}
 
-  @if (profileResource.error()) {
-    <p class="status status--error">Unable to load the profile.</p>
-  }
+@if (profileResource.error()) {
+  <p class="status status--error">Unable to load the profile.</p>
+}
 
-  @if (profileResource.value(); as profile) {
-    <h1>{{ profile.firstName }} {{ profile.lastName }}</h1>
-    <p class="job-title">{{ profile.jobTitle }}</p>
-    <p class="availability">{{ availabilityLabels[profile.availability] }}</p>
+@if (profileResource.value(); as profile) {
+  <header class="hero">
+    <div class="hero__content">
+      <p class="hero__eyebrow"><span class="hero__signal"></span> PORTFOLIO / PROFILE</p>
+      <h1 class="hero__name">{{ profile.firstName }} {{ profile.lastName }}</h1>
+      <p class="hero__role">{{ profile.jobTitle }}</p>
+      <p class="hero__pitch">{{ profile.pitch }}</p>
 
-    <p class="pitch">{{ profile.pitch }}</p>
-
-    <dl class="contact">
-      <div>
-        <dt>Email</dt>
-        <dd><a [href]="'mailto:' + profile.email">{{ profile.email }}</a></dd>
-      </div>
-      @if (profile.phone) {
-        <div>
-          <dt>Phone</dt>
-          <dd>{{ profile.phone }}</dd>
+      <p class="hero__specs-label"><span aria-hidden="true">+</span> PROFILE DATA / 03 MODULES</p>
+      <dl class="hero__specs">
+        <div class="hero__spec hero__spec--experience">
+          <dt><span class="hero__spec-index">/</span> Experience</dt>
+          <dd><strong>{{ profile.yearsOfExperience }}</strong><span>years</span></dd>
         </div>
-      }
-      @if (profile.linkedinUrl) {
-        <div>
-          <dt>LinkedIn</dt>
-          <dd><a [href]="profile.linkedinUrl" target="_blank" rel="noopener">{{ profile.linkedinUrl }}</a></dd>
+        <div class="hero__spec hero__spec--contact">
+          <dt><span class="hero__spec-index">/</span> Contact</dt>
+          <dd class="hero__contact-links">
+            <a [href]="'mailto:' + profile.email">
+              <span class="hero__contact-type">EMAIL</span>
+              <span class="hero__contact-value">{{ profile.email }}</span>
+              <span class="hero__contact-arrow" aria-hidden="true">↗</span>
+            </a>
+            @if (profile.phone) {
+              <a [href]="'tel:' + profile.phone">
+                <span class="hero__contact-type">PHONE</span>
+                <span class="hero__contact-value">{{ profile.phone }}</span>
+                <span class="hero__contact-arrow" aria-hidden="true">↗</span>
+              </a>
+            }
+          </dd>
         </div>
-      }
-      @if (profile.githubUrl) {
-        <div>
-          <dt>GitHub</dt>
-          <dd><a [href]="profile.githubUrl" target="_blank" rel="noopener">{{ profile.githubUrl }}</a></dd>
+        <div class="hero__spec hero__spec--networks">
+          <dt><span class="hero__spec-index">/</span> Networks</dt>
+          <dd class="hero__contact-links">
+            @if (profile.linkedinUrl) {
+              <a [href]="profile.linkedinUrl" target="_blank" rel="noopener">
+                <span class="hero__network-icon" aria-hidden="true">in</span>
+                <span class="hero__network-name">LinkedIn</span>
+                <span class="hero__network-arrow" aria-hidden="true">↗</span>
+              </a>
+            }
+            @if (profile.githubUrl) {
+              <a [href]="profile.githubUrl" target="_blank" rel="noopener">
+                <span class="hero__network-icon" aria-hidden="true">GH</span>
+                <span class="hero__network-name">GitHub</span>
+                <span class="hero__network-arrow" aria-hidden="true">↗</span>
+              </a>
+            }
+          </dd>
         </div>
-      }
-    </dl>
-
-    <!-- <a routerLink="/profile/edit">Edit profile</a> -->
-  }
-</div>
+      </dl>
+    </div>
+  </header>
+}

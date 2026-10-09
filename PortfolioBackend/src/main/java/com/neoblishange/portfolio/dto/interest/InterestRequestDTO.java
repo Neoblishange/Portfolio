@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 public record InterestRequestDTO(
 
         @NotBlank
+        String name,
+
+        @NotBlank
         String description
 ) {
 }

@@ -4,6 +4,7 @@ export interface Skill {
   id: number;
   name: string;
   level: string | null;
+  featured: boolean;
   category: Category;
   displayOrder: number;
 }

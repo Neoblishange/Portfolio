@@ -1,26 +1,24 @@
 package com.neoblishange.portfolio.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.neoblishange.portfolio.config.PortfolioData;
 import com.neoblishange.portfolio.entity.Category;
 import com.neoblishange.portfolio.entity.Education;
 import com.neoblishange.portfolio.entity.Experience;
 import com.neoblishange.portfolio.entity.Interest;
-import com.neoblishange.portfolio.entity.Project;
+import com.neoblishange.portfolio.entity.project.Project;
 import com.neoblishange.portfolio.entity.Skill;
 import com.neoblishange.portfolio.entity.profile.Profile;
-import com.neoblishange.portfolio.repository.CategoryRepository;
-import com.neoblishange.portfolio.repository.EducationRepository;
-import com.neoblishange.portfolio.repository.ExperienceRepository;
-import com.neoblishange.portfolio.repository.InterestRepository;
-import com.neoblishange.portfolio.repository.ProfileRepository;
-import com.neoblishange.portfolio.repository.ProjectRepository;
+import com.neoblishange.portfolio.exception.ResourceNotFoundException;
+import com.neoblishange.portfolio.repository.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class PortfolioDataInitializer implements CommandLineRunner {
@@ -31,6 +29,7 @@ public class PortfolioDataInitializer implements CommandLineRunner {
     private final InterestRepository interestRepository;
     private final ProjectRepository projectRepository;
     private final ProfileRepository profileRepository;
+    private final SkillRepository skillRepository;
     private final ObjectMapper objectMapper;
 
     @Value("${app.data.file:/app/data/portfolio-data.json}")
@@ -43,6 +42,7 @@ public class PortfolioDataInitializer implements CommandLineRunner {
             InterestRepository interestRepository,
             ProjectRepository projectRepository,
             ProfileRepository profileRepository,
+            SkillRepository skillRepository,
             ObjectMapper objectMapper
     ) {
         this.categoryRepository = categoryRepository;
@@ -51,6 +51,7 @@ public class PortfolioDataInitializer implements CommandLineRunner {
         this.interestRepository = interestRepository;
         this.projectRepository = projectRepository;
         this.profileRepository = profileRepository;
+        this.skillRepository = skillRepository;
         this.objectMapper = objectMapper;
     }
 
@@ -121,6 +122,7 @@ public class PortfolioDataInitializer implements CommandLineRunner {
                 skill.setDisplayOrder(skillData.displayOrder());
                 skill.setLevel(skillData.level());
                 skill.setCategory(category);
+                skill.setFeatured(skillData.featured());
 
                 category.getSkills().add(skill);
             }
@@ -170,6 +172,7 @@ public class PortfolioDataInitializer implements CommandLineRunner {
 
             Interest interest = new Interest();
 
+            interest.setName(dataItem.name());
             interest.setDescription(dataItem.description());
 
             interestRepository.save(interest);
@@ -177,18 +180,45 @@ public class PortfolioDataInitializer implements CommandLineRunner {
     }
 
     private void importProjects(PortfolioData data) {
-
         for (PortfolioData.ProjectData dataItem : data.projects()) {
-
             Project project = new Project();
 
             project.setTitle(dataItem.title());
             project.setSlug(dataItem.slug());
+            project.setProjectType(dataItem.projectType());
+            project.setProjectContext(dataItem.projectContext());
             project.setShortDescription(dataItem.shortDescription());
             project.setDescription(dataItem.description());
+            project.setFunctionalities(dataItem.functionalities());
             project.setStartDate(dataItem.startDate());
             project.setEndDate(dataItem.endDate());
 
+            List<Skill> foundSkills =
+                    skillRepository.findByNameIn(dataItem.skills());
+
+            Map<String, Skill> skillsByName = new HashMap<>();
+            for (Skill skill : foundSkills) {
+                if (skillsByName.putIfAbsent(skill.getName(), skill) != null) {
+                    throw new IllegalStateException(
+                            "Duplicate skill name: " + skill.getName()
+                    );
+                }
+            }
+
+            List<Skill> projectSkills = dataItem.skills().stream()
+                    .map(name -> {
+                        Skill skill = skillsByName.get(name);
+                        if (skill == null) {
+                            throw new ResourceNotFoundException(
+                                    "Skill \"" + name + "\" referenced by project \""
+                                            + dataItem.title() + "\" was not found"
+                            );
+                        }
+                        return skill;
+                    })
+                    .toList();
+
+            project.setSkills(projectSkills);
             projectRepository.save(project);
         }
     }

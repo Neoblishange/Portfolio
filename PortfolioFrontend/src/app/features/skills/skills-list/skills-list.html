@@ -1,6 +1,6 @@
 <div class="skills-list">
   @if (skillsResource.isLoading()) {
-    <p class="status">Loading...</p>
+    <p class="status">Loading skill modules...</p>
   }
 
   @if (skillsResource.error()) {
@@ -8,38 +8,44 @@
   }
 
   @if (groupedSkills().length === 0 && skillsResource.hasValue()) {
-    <p class="status">No skills yet.</p>
+    <p class="status">No featured skills available.</p>
   }
 
   @if (groupedSkills().length > 0) {
     <div class="skill-groups" aria-label="Skill categories">
-      @for (group of groupedSkills(); track group.category.id) {
-        <article class="skill-card">
-          <div class="skill-card__illustration">
+      @for (group of groupedSkills(); track group.category.id; let index = $index) {
+        <article [class]="'skill-card skill-card--' + categoryImage(group.category.name)">
+          <header class="skill-card__header">
             <div
               class="skill-card__icon-frame"
-              [class]="'skill-card__icon-frame skill-card__icon-frame--' + categoryImage(group.category.name)"
             >
               <img
                 class="skill-card__image"
                 [src]="'/images/skills/' + categoryImage(group.category.name) + '.png'"
-                [alt]="'Category illustration: ' + group.category.name"
+                alt=""
               />
             </div>
-          </div>
 
-          <div class="skill-card__content">
-            <h3 class="skill-card__title">{{ group.category.name }}</h3>
-            <ul class="skill-card__skills">
-              @for (skill of group.skills; track skill.id) {
-                <li>
-                  <span>{{ skill.name }}</span>
-                  @if (skill.level) {
-                    <span class="skill-card__level">{{ skill.level }}</span>
-                  }
-                </li>
-              }
-            </ul>
+            <div class="skill-card__heading">
+              <p class="skill-card__index">MODULE / {{ (index + 1).toString().padStart(2, '0') }}</p>
+              <h3 class="skill-card__title">{{ group.category.name }}</h3>
+            </div>
+          </header>
+
+          <ul class="skill-card__skills">
+            @for (skill of group.skills; track skill.id) {
+              <li class="skill-card__skill">
+                <span class="skill-card__name">{{ skill.name }}</span>
+                @if (skill.level) {
+                  <span class="skill-card__level">{{ skill.level }}</span>
+                }
+              </li>
+            }
+          </ul>
+
+          <div class="skill-card__footer" aria-hidden="true">
+            <span>//</span>
+            <span class="skill-card__signal"></span>
           </div>
         </article>
       }

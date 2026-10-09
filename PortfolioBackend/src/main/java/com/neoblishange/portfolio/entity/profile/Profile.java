@@ -2,6 +2,8 @@ package com.neoblishange.portfolio.entity.profile;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "profile")
 public class Profile {
@@ -35,7 +37,7 @@ public class Profile {
     private String pitch;
 
     @Column(nullable = false)
-    private Integer yearsOfExperience;
+    private BigDecimal yearsOfExperience;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
@@ -112,11 +114,11 @@ public class Profile {
         this.pitch = pitch;
     }
 
-    public Integer getYearsOfExperience() {
+    public BigDecimal getYearsOfExperience() {
         return yearsOfExperience;
     }
 
-    public void setYearsOfExperience(Integer yearsOfExperience) {
+    public void setYearsOfExperience(BigDecimal yearsOfExperience) {
         this.yearsOfExperience = yearsOfExperience;
     }
 

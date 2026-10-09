@@ -1,117 +1,9 @@
-.hero {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  min-height: 90vh;
-  padding: clamp(4rem, 10vw, 8rem) 1.5rem;
-  border-bottom: 1px solid var(--line);
-  background:
-    radial-gradient(ellipse at 78% 35%, color-mix(in srgb, var(--accent-soft) 15%, transparent), transparent 30rem),
-    radial-gradient(ellipse at 15% 90%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 28rem),
-    var(--paper);
-}
-
-.hero__content {
-  position: relative;
-  width: 100%;
-  max-width: 1080px;
-  margin: 0 auto;
-}
-
-.hero__eyebrow,
 .section__eyebrow,
 .home-footer,
 .home-nav__status {
   font-family: var(--font-mono), serif;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-}
-
-.hero__eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin: 0 0 1.5rem;
-  color: var(--accent);
-  font-size: 0.75rem;
-}
-
-.hero__signal,
-.home-nav__status span {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 1rem color-mix(in srgb, var(--accent) 70%, transparent);
-}
-
-.hero__name {
-  max-width: 900px;
-  font-size: clamp(3rem, 9vw, 6.5rem);
-  line-height: 1.05;
-}
-
-.hero__role {
-  margin: 1rem 0 0;
-  color: var(--accent);
-  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
-}
-
-.hero__pitch {
-  margin: 1.5rem 0 0;
-  max-width: 680px;
-  color: var(--muted);
-  font-size: 1.05rem;
-  text-align: justify;
-}
-
-.hero__specs {
-  margin: 3rem 0 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  max-width: 1080px;
-}
-
-.hero__spec {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 1rem 1.125rem;
-  border: 1px solid var(--line);
-  border-radius: 0.625rem;
-  background: color-mix(in srgb, var(--paper-raised) 76%, transparent);
-}
-
-.hero__spec dt {
-  color: var(--muted);
-  font-family: var(--font-mono), serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.hero__spec dd {
-  margin: 0.5rem 0 0;
-  font-size: 0.9375rem;
-}
-
-.hero__contact-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1rem;
-}
-
-.hero__contact-links a {
-  color: var(--ink);
-  text-decoration: none;
-  border-bottom: 1px solid var(--line);
-}
-
-.hero__contact-links a:hover {
-  color: var(--accent);
-  border-color: var(--accent);
 }
 
 .home-nav {
@@ -147,11 +39,17 @@
   gap: clamp(0.75rem, 2.5vw, 2rem);
 }
 
-.home-nav__links a,
-.home-footer a {
+.home-nav__links a {
   color: var(--muted);
   text-decoration: none;
   transition: color 160ms ease;
+}
+
+.home-footer a {
+  color: var(--accent);
+  text-decoration: none;
+  text-shadow: 0 0 0.7rem color-mix(in srgb, var(--accent) 35%, transparent);
+  transition: color 160ms ease, text-shadow 160ms ease;
 }
 
 .home-nav__links a {
@@ -186,9 +84,13 @@
   font-size: 0.9rem;
 }
 
-.home-nav__links a:hover,
-.home-footer a:hover {
+.home-nav__links a:hover {
   color: var(--accent);
+}
+
+.home-footer a:hover {
+  color: var(--ink);
+  text-shadow: 0 0 0.9rem color-mix(in srgb, var(--accent) 65%, transparent);
 }
 
 .home-nav__status {
@@ -203,11 +105,18 @@
 .home-nav__status span {
   width: 0.4rem;
   height: 0.4rem;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 1rem color-mix(in srgb, var(--accent) 70%, transparent);
 }
 
 .section {
   padding: clamp(3.5rem, 7vw, 6rem) 1.5rem;
   border-bottom: 1px solid var(--line);
+}
+
+#interests {
+  min-height: 60vh;
 }
 
 .section--raised {
@@ -242,33 +151,17 @@
   content: '';
 }
 
-.status {
-  text-align: center;
-  padding: 2rem;
-}
-
-.status--error {
-  color: var(--danger);
-}
-
 .home-footer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 1rem;
   padding: 1.5rem;
-  color: var(--muted);
-  font-size: 0.625rem;
+  color: var(--accent-soft);
+  font-size: 0.8rem;
 }
 
 @media (max-width: 640px) {
-  .hero {
-    padding-inline: 1.25rem;
-  }
-
-  .hero__specs {
-    grid-template-columns: 1fr;
-  }
-
   .home-nav {
     gap: 0.75rem;
     padding-inline: 1rem;

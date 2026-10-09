@@ -1,66 +1,79 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, inject, signal } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
 import { ExperiencesList } from '../experiences/experiences-list/experiences-list';
 import { EducationsList } from '../educations/educations-list/educations-list';
 import { ProjectsList } from '../projects/projects-list/projects-list';
 import { SkillsList } from '../skills/skills-list/skills-list';
 import { InterestsManager } from '../interests/interests-manager/interests-manager';
-import { ProfileApi } from '../profile/data-access/profile-api';
+import { ProfileView } from '../profile/profile-view/profile-view';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ExperiencesList, EducationsList, ProjectsList, SkillsList, InterestsManager],
+  imports: [ProfileView, ExperiencesList, EducationsList, ProjectsList, SkillsList, InterestsManager],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
 export class Home implements AfterViewInit, OnDestroy {
-  private readonly profileApi = inject(ProfileApi);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
-  private sectionObserver?: IntersectionObserver;
-  private readonly visibleSections = new Set<Element>();
+  private sectionFrame?: number;
 
   protected readonly activeSection = signal('experiences');
 
-  protected readonly profileResource = rxResource({
-    stream: () => this.profileApi.get()
-  });
-
   ngAfterViewInit(): void {
-    if (typeof IntersectionObserver === 'undefined') {
-      return;
-    }
-
-    this.sectionObserver = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            this.visibleSections.add(entry.target);
-          } else {
-            this.visibleSections.delete(entry.target);
-          }
-        }
-
-        const anchor = window.innerHeight * 0.25;
-        const current = [...this.visibleSections]
-          .sort((a, b) =>
-            Math.abs(a.getBoundingClientRect().top - anchor) -
-            Math.abs(b.getBoundingClientRect().top - anchor)
-          )[0];
-
-        if (current) {
-          this.activeSection.set(current.id);
-        }
-      },
-      { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
-    );
-
-    this.host.nativeElement.querySelectorAll<HTMLElement>('.section[id]').forEach((section) => {
-      this.sectionObserver?.observe(section);
-    });
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onScroll);
+    this.updateActiveSection();
   }
 
   ngOnDestroy(): void {
-    this.sectionObserver?.disconnect();
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onScroll);
+    if (this.sectionFrame !== undefined) {
+      window.cancelAnimationFrame(this.sectionFrame);
+    }
+  }
+
+  private readonly onScroll = (): void => {
+    if (this.sectionFrame !== undefined) {
+      return;
+    }
+
+    this.sectionFrame = window.requestAnimationFrame(() => {
+      this.sectionFrame = undefined;
+      this.updateActiveSection();
+    });
+  };
+
+  private updateActiveSection(): void {
+    const sections = [...this.host.nativeElement.querySelectorAll<HTMLElement>('.section[id]')];
+    if (sections.length === 0) {
+      return;
+    }
+
+    const navigation = this.host.nativeElement.querySelector<HTMLElement>('.home-nav');
+    const navigationHeight = navigation?.getBoundingClientRect().height ?? 0;
+    const lastSection = sections[sections.length - 1];
+    const lastBounds = lastSection.getBoundingClientRect();
+    const trackingLine = navigationHeight + (window.innerHeight - navigationHeight) * 0.25;
+    const lastSectionTrackingLine = navigationHeight + (window.innerHeight - navigationHeight) * 0.12;
+    const atPageBottom = window.scrollY + window.innerHeight >=
+      document.documentElement.scrollHeight - 2;
+
+    if (
+      (lastBounds.top <= lastSectionTrackingLine && lastBounds.bottom > 0) ||
+      atPageBottom
+    ) {
+      this.activeSection.set(lastSection.id);
+      return;
+    }
+
+    const currentSection = sections.find((section) => {
+      const bounds = section.getBoundingClientRect();
+      return bounds.top <= trackingLine && bounds.bottom > trackingLine;
+    });
+
+    if (currentSection) {
+      this.activeSection.set(currentSection.id);
+    }
   }
 }

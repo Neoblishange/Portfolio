@@ -2,6 +2,8 @@ package com.neoblishange.portfolio.dto.profile;
 
 import com.neoblishange.portfolio.entity.profile.Availability;
 
+import java.math.BigDecimal;
+
 public record ProfileResponseDTO(
         Long id,
         String firstName,
@@ -12,7 +14,7 @@ public record ProfileResponseDTO(
         String linkedinUrl,
         String githubUrl,
         String pitch,
-        Integer yearsOfExperience,
+        BigDecimal yearsOfExperience,
         Availability availability
 ) {
 }

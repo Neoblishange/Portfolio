@@ -5,7 +5,15 @@
   <form (submit)="$event.preventDefault(); onAdd()">
     <input
       type="text"
-      placeholder="Add an interest"
+      placeholder="Interest name"
+      aria-label="Interest name"
+      [value]="newName()"
+      (input)="newName.set($any($event.target).value)"
+    />
+    <input
+      type="text"
+      placeholder="Description"
+      aria-label="Interest description"
       [value]="newDescription()"
       (input)="newDescription.set($any($event.target).value)"
     />
@@ -25,7 +33,12 @@
     <ul class="interests-list">
       @for (interest of interests; track interest.id) {
         <li class="interests-list__item">
-          {{ interest.description }}
+          <div class="interests-list__topline">
+            <span class="interests-list__index">INTEREST // {{ $index + 1 }}</span>
+            <span class="interests-list__signal" aria-hidden="true"></span>
+          </div>
+          <h3 class="interests-list__name">{{ interest.name }}</h3>
+          <p class="interests-list__description">{{ interest.description }}</p>
           <!-- <button (click)="onDelete(interest.id)">Delete</button> -->
         </li>
       }

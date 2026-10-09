@@ -1,47 +1,300 @@
-.profile-view {
-  max-width: 700px;
+.hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: 80vh;
+  max-height: 90vh;
+  padding: clamp(4rem, 10vw, 8rem) 1.5rem;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(ellipse at 78% 35%, color-mix(in srgb, var(--accent-soft) 15%, transparent), transparent 30rem),
+    radial-gradient(ellipse at 15% 90%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 28rem),
+    var(--paper);
+}
+
+.hero__content {
+  position: relative;
+  width: 100%;
+  max-width: 1080px;
   margin: 0 auto;
 }
 
-.job-title {
-  color: var(--muted);
-  font-size: 1.125rem;
-  margin-top: 0.25rem;
-}
-
-.availability {
-  display: inline-block;
-  margin-top: 0.75rem;
-  font-size: 0.875rem;
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 1.5rem;
   color: var(--accent);
+  font-family: var(--font-mono), serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-.pitch {
-  margin-top: 1.5rem;
-  max-width: 700px;
+.hero__signal {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 1rem color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.hero__name {
+  max-width: 900px;
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  line-height: 1.05;
+}
+
+.hero__role {
+  margin: 1rem 0 0;
+  color: var(--accent);
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+}
+
+.hero__pitch {
+  margin: 1.5rem 0 0;
+  max-width: 680px;
+  color: var(--muted);
+  font-size: 1.05rem;
   text-align: justify;
 }
 
-.contact {
-  margin-top: 2rem;
+.hero__specs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.875rem;
+  max-width: 1080px;
+  margin: 0;
+}
+
+.hero__specs-label {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 3rem 0 0.75rem;
+  color: var(--muted);
+  font-family: var(--font-mono), serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+}
+
+.hero__specs-label span {
+  color: var(--accent);
+  font-size: 0.95rem;
+}
+
+.hero__spec {
+  position: relative;
+  min-width: 0;
+  min-height: 7rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.125rem 1.125rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 5%, transparent), transparent 55%),
+    color-mix(in srgb, var(--paper-raised) 88%, transparent);
+  box-shadow: inset 0 1px color-mix(in srgb, var(--ink) 4%, transparent);
+  transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
-.contact dt {
-  font-size: 0.8125rem;
+.hero__spec::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  content: '';
+  pointer-events: none;
+}
+
+.hero__spec:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  box-shadow: 0 0.75rem 2rem color-mix(in srgb, var(--accent) 7%, transparent);
+}
+
+.hero__spec dt {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   color: var(--muted);
+  font-family: var(--font-mono), serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-.contact dd {
-  margin: 0.125rem 0 0;
+.hero__spec-index {
+  color: var(--accent);
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+.hero__spec dd {
+  min-width: 0;
+  margin: auto 0;
+  font-size: 0.9375rem;
+}
+
+.hero__spec--experience dd {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+}
+
+.hero__spec--experience dd strong {
+  color: var(--accent);
+  font-family: var(--font-mono), serif;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1;
+  text-shadow: 0 0 1.25rem color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.hero__spec--experience dd > span {
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.hero__contact-links {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.hero__contact-links a {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+.hero__spec--contact .hero__contact-links a {
+  width: 100%;
+  gap: 0.65rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 75%, transparent);
+  font-size: 0.95rem;
+}
+
+.hero__spec--contact .hero__contact-links a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateX(3px);
+}
+
+.hero__contact-type {
+  flex: 0 0 3rem;
+  color: var(--accent);
+  font-family: var(--font-mono), serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+.hero__contact-value {
+  min-width: 0;
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+}
+
+.hero__contact-arrow {
+  flex: 0 0 auto;
+  margin-left: auto;
+  color: var(--accent);
+  font-family: var(--font-mono), serif;
+}
+
+.hero__spec--networks .hero__contact-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.hero__spec--networks .hero__contact-links a {
+  min-width: 0;
+  min-height: 2.75rem;
+  display: grid;
+  grid-template-columns: 1.65rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 0.35rem;
+  background: color-mix(in srgb, var(--paper) 55%, transparent);
+}
+
+.hero__spec--networks .hero__contact-links a:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--paper));
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.hero__network-icon {
+  display: grid;
+  width: 1.55rem;
+  height: 1.55rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+  border-radius: 0.25rem;
+  color: var(--accent);
+  font-family: var(--font-mono), serif;
+  font-size: 0.75rem;
+}
+
+.hero__network-name {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.825rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hero__network-arrow {
+  color: var(--muted);
+  font-family: var(--font-mono), serif;
+  font-size: 0.7rem;
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.hero__spec--networks .hero__contact-links a:hover .hero__network-arrow {
+  color: var(--accent);
+  transform: translate(2px, -2px);
 }
 
 .status {
   color: var(--muted);
+  text-align: center;
+  padding: 2rem;
 }
 
 .status--error {
-  color: #a13d2b;
+  color: var(--danger);
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding-inline: 1.25rem;
+  }
+
+  .hero__specs {
+    grid-template-columns: 1fr;
+  }
+
+  .hero__spec {
+    min-height: 6rem;
+  }
 }

@@ -20,7 +20,7 @@
 }
 
 html {
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 10vh;
 }
 
 body {
@@ -89,6 +89,7 @@ button:hover {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+/*
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -98,3 +99,5 @@ button:hover {
     transition: none !important;
   }
 }
+
+ */

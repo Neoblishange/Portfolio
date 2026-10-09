@@ -1,7 +1,11 @@
 package com.neoblishange.portfolio.config;
 
+import com.neoblishange.portfolio.entity.Skill;
 import com.neoblishange.portfolio.entity.profile.Availability;
+import com.neoblishange.portfolio.entity.project.ProjectContext;
+import com.neoblishange.portfolio.entity.project.ProjectType;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,7 +27,7 @@ public record PortfolioData(
             String linkedinUrl,
             String githubUrl,
             String pitch,
-            Integer yearsOfExperience,
+            BigDecimal yearsOfExperience,
             Availability availability
     ) {}
 
@@ -36,7 +40,8 @@ public record PortfolioData(
     public record SkillData(
             String name,
             Integer displayOrder,
-            String level
+            String level,
+            boolean featured
     ) {}
 
     public record ExperienceData(
@@ -60,15 +65,20 @@ public record PortfolioData(
     ) {}
 
     public record InterestData(
+            String name,
             String description
     ) {}
 
     public record ProjectData(
             String title,
             String slug,
+            ProjectType projectType,
+            List<ProjectContext> projectContext,
             String shortDescription,
             List<String> description,
+            List<String> functionalities,
             LocalDate startDate,
-            LocalDate endDate
+            LocalDate endDate,
+            List<String> skills
     ) {}
 }

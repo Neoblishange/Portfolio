@@ -15,16 +15,19 @@ export class InterestsManager {
     stream: () => this.interestsApi.getAll()
   });
 
+  protected readonly newName = signal('');
   protected readonly newDescription = signal('');
 
   protected onAdd(): void {
+    const name = this.newName().trim();
     const description = this.newDescription().trim();
-    if (!description) {
+    if (!name || !description) {
       return;
     }
 
-    this.interestsApi.create({ description }).subscribe({
+    this.interestsApi.create({ name, description }).subscribe({
       next: () => {
+        this.newName.set('');
         this.newDescription.set('');
         this.interestsResource.reload();
       }

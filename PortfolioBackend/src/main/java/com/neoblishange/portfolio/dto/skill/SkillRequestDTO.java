@@ -12,6 +12,9 @@ public record SkillRequestDTO(
         @Size(max = 50)
         String level,
 
+        @NotNull
+        boolean featured,
+
         @NotBlank
         Long categoryId,
 

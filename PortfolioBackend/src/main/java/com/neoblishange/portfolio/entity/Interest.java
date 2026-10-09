@@ -10,6 +10,9 @@ public class Interest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String name;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
@@ -18,6 +21,14 @@ public class Interest {
 
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

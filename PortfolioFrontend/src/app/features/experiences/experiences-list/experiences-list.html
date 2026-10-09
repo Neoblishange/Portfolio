@@ -17,14 +17,13 @@
         <li class="timeline__item">
           <div class="timeline__marker" [class.timeline__marker--current]="experience.current"></div>
           <div class="timeline__body">
-            <p class="timeline__dates">
-              {{ experience.startDate }}
-              @if (experience.current) {
-                - Present
-              } @else {
-                - {{ experience.endDate }}
-              }
-            </p>
+            <div class="timeline__dates" [class.timeline__dates--current]="experience.current">
+              <span class="timeline__date">{{ experience.startDate }}</span>
+              <span class="timeline__date-arrow" aria-hidden="true">→</span>
+              <span class="timeline__date">
+                {{ experience.current ? 'Present' : experience.endDate }}
+              </span>
+            </div>
             <h3 class="timeline__role">{{ experience.position }}</h3>
             <p class="timeline__company">
               {{ experience.company }}

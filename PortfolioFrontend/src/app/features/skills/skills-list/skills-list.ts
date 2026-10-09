@@ -31,7 +31,7 @@ export class SkillsList {
   });
 
   protected readonly groupedSkills = computed<SkillsGroup[]>(() => {
-    const skills = this.skillsResource.value() ?? [];
+    const skills = (this.skillsResource.value() ?? []).filter(skill => skill.featured);
     const groups = new Map<number, SkillsGroup>();
 
     for (const skill of skills) {
@@ -43,9 +43,14 @@ export class SkillsList {
       }
     }
 
-    return Array.from(groups.values()).sort((a, b) =>
-      a.category.name.localeCompare(b.category.name)
-    );
+    return Array.from(groups.values())
+      .sort((a, b) => a.category.name.localeCompare(b.category.name))
+      .map(group => ({
+        ...group,
+        skills: group.skills.sort((a, b) =>
+          a.displayOrder - b.displayOrder || a.name.localeCompare(b.name)
+        )
+      }));
   });
 
   protected categoryImage(categoryName: string): CategoryImage {
