@@ -1,6 +1,6 @@
 package com.neoblishange.portfolio.repository;
 
-import com.neoblishange.portfolio.entity.Project;
+import com.neoblishange.portfolio.entity.project.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -24,6 +24,26 @@
   }
 
   <label>
+    Project type
+    <input type="text" [formField]="projectForm.projectType" placeholder="e.g. Web application" />
+  </label>
+  @if (projectForm.projectType().touched() && projectForm.projectType().invalid()) {
+    @for (err of projectForm.projectType().errors(); track err.kind) {
+      <p class="error">{{ err.message }}</p>
+    }
+  }
+
+  <label>
+    Project context
+    <textarea [formField]="projectForm.projectContext"></textarea>
+  </label>
+  @if (projectForm.projectContext().touched() && projectForm.projectContext().invalid()) {
+    @for (err of projectForm.projectContext().errors(); track err.kind) {
+      <p class="error">{{ err.message }}</p>
+    }
+  }
+
+  <label>
     Short description
     <input type="text" [formField]="projectForm.shortDescription" />
   </label>
@@ -37,6 +57,36 @@
     Description
     <textarea [formField]="projectForm.description"></textarea>
   </label>
+
+  <label>
+    Functionalities <span>(one per line)</span>
+    <textarea
+      [value]="model().functionalitiesText"
+      (input)="onFunctionalitiesInput($event)"
+    ></textarea>
+  </label>
+
+  <fieldset>
+    <legend>Skills used</legend>
+    @if (skillsResource.isLoading()) {
+      <p>Loading skills...</p>
+    } @else if (skillsResource.error()) {
+      <p class="error">Unable to load skills.</p>
+    } @else if (skillsResource.value(); as skills) {
+      @for (skill of skills; track skill.id) {
+        <label class="skill-option">
+          <input
+            type="checkbox"
+            [checked]="isSkillSelected(skill.id)"
+            (change)="onSkillCheckboxChange(skill, $event)"
+          />
+          {{ skill.name }} <span>({{ skill.category.name }})</span>
+        </label>
+      } @empty {
+        <p>No skills available.</p>
+      }
+    }
+  </fieldset>
 
   <label>
     Start date

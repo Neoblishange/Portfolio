@@ -2,7 +2,7 @@ package com.neoblishange.portfolio.service;
 
 import com.neoblishange.portfolio.dto.project.ProjectRequestDTO;
 import com.neoblishange.portfolio.dto.project.ProjectResponseDTO;
-import com.neoblishange.portfolio.entity.Project;
+import com.neoblishange.portfolio.entity.project.Project;
 import com.neoblishange.portfolio.exception.ResourceAlreadyExistsException;
 import com.neoblishange.portfolio.exception.ResourceNotFoundException;
 import com.neoblishange.portfolio.mapper.ProjectMapper;

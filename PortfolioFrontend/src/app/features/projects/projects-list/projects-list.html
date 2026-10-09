@@ -15,25 +15,23 @@
     <ul class="project-index">
       @for (project of projectsResource.value(); track project.id) {
         <li class="project-index__item">
-          <h3 class="project-index__title">{{ project.title }}</h3>
+          <div class="project-index__heading">
+            <h3 class="project-index__title">
+              <a [routerLink]="['/projects', project.id]">{{ project.title }}</a>
+            </h3>
+            <p class="project-index__type">{{ project.projectType }}</p>
+          </div>
           <p class="project-index__summary">{{ project.shortDescription }}</p>
-          <p class="project-index__dates">
-            {{ project.startDate }}
-            @if (project.endDate) {
-              - {{ project.endDate }}
-            }
-          </p>
-          <ul>
-            @for (desc of project.description; track desc) {
-              <li class="project-index__summary">{{ desc }}</li>
-            }
-          </ul>
-
-          <!--
-          <a [routerLink]="[project.id]">{{ project.title }}</a>
-          <a [routerLink]="[project.id, 'edit']">Edit</a>
-          <button (click)="onDelete(project.id)">Delete</button>
-          -->
+          @if (project.skills.length > 0) {
+            <ul class="project-index__skills" aria-label="Skills used">
+              @for (skill of project.skills; track skill.id) {
+                <li>{{ skill.name }}</li>
+              }
+            </ul>
+          }
+          <a class="project-index__details" [routerLink]="['/projects', project.id]">
+            View project <span aria-hidden="true">↗</span>
+          </a>
         </li>
       }
     </ul>

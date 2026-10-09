@@ -1,33 +1,122 @@
-<div class="projects-detail">
+<main class="projects-detail">
   @if (projectResource.isLoading()) {
-    <p>Loading...</p>
+    <p class="project-status">Loading project...</p>
   }
 
   @if (projectResource.error()) {
-    <p class="error">Unable to load this project.</p>
+    <p class="project-status project-status--error" role="alert">
+      Unable to load this project.
+    </p>
   }
 
   @if (projectResource.value(); as project) {
-    <a routerLink="/projects">← Back to projects</a>
+    <article class="project-panel">
+      <header class="project-topbar">
+        <a class="project-back" routerLink="/" fragment="projects">
+          <span aria-hidden="true">←</span>
+          <span>Back to projects</span>
+        </a>
+        <span class="project-id">PROJECT // {{ project.id }}</span>
+      </header>
 
-    <h1>{{ project.title }}</h1>
-    <p class="dates">
-      {{ project.startDate }}
-      @if (project.endDate) {
-        → {{ project.endDate }}
-      }
-    </p>
+      <div class="project-layout">
+        <section class="project-main" aria-labelledby="project-title">
+          <header class="project-card project-intro">
+            <p class="project-kicker"><span aria-hidden="true">[</span> PROJECT FILE <span aria-hidden="true">]</span></p>
+            <h1 class="project-title" id="project-title">{{ project.title }}</h1>
+            <p class="project-type">{{ project.projectType }}</p>
+            <p class="project-summary">{{ project.shortDescription }}</p>
+          </header>
 
-    <p>{{ project.description }}</p>
-<!--
-    @if (project.images.length > 0) {
-      <div class="images">
-        @for (image of project.images; track image.id) {
-          <img [src]="image.url" [alt]="image.alt ?? project.title" />
-        }
+          @if (project.description.length > 0) {
+            <section class="project-card project-section">
+              <h2 class="project-section-title">
+                <span class="project-section-number">/</span>
+                Overview
+              </h2>
+              <ul class="project-arrow-list">
+                @for (description of project.description; track description) {
+                  <li>{{ description }}</li>
+                }
+              </ul>
+            </section>
+          }
+
+          @if (project.functionalities.length > 0) {
+            <section class="project-card project-section">
+              <h2 class="project-section-title">
+                <span class="project-section-number">/</span>
+                Functionalities
+              </h2>
+              <ul class="project-functionalities">
+                @for (functionality of project.functionalities; track functionality) {
+                  <li>{{ functionality }}</li>
+                }
+              </ul>
+            </section>
+          }
+        </section>
+
+        <aside class="project-meta" aria-label="Project information">
+          @if (project.projectContext) {
+            <section class="project-card project-section project-context-card">
+              <h2 class="project-section-title">
+                <span class="project-section-number">/</span>
+                Context
+              </h2>
+              <ul class="project-context">
+                @for (item of project.projectContext; track $index) {
+                  <li [class]="'project-context__tag project-context__tag--' + ($index % 4)">
+                    {{ item }}
+                  </li>
+                }
+              </ul>
+            </section>
+          }
+
+          <section class="project-card project-timeline">
+            <h2 class="project-section-title">
+              <span class="project-section-number">/</span>
+              Timeline
+            </h2>
+            <dl class="project-dates">
+              <div class="project-date">
+                <dt>START</dt>
+                <dd>{{ project.startDate }}</dd>
+              </div>
+              @if (project.endDate) {
+                <div class="project-date">
+                  <dt>END</dt>
+                  <dd>{{ project.endDate }}</dd>
+                </div>
+              }
+            </dl>
+          </section>
+
+          @if (project.skills.length > 0) {
+            <section class="project-card project-skills">
+              <h3 class="project-section-title">
+                <span class="project-section-number">/</span>
+                Skills
+              </h3>
+              <ul>
+                @for (skill of project.skills; track skill.id) {
+                  <li>{{ skill.name }}</li>
+                }
+              </ul>
+            </section>
+          }
+
+          <!--
+          <a class="project-edit" [routerLink]="['/projects', project.id, 'edit']">
+            <span>Edit project</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          -->
+        </aside>
       </div>
-    }
--->
-    <a [routerLink]="['/projects', project.id, 'edit']">Edit</a>
+
+      <div class="project-decoration" aria-hidden="true">SYS.READY_</div>
+    </article>
   }
-</div>
+</main>
