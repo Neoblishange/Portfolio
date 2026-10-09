@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { ProjectsApi } from '../data-access/projects-api';
 
 @Component({
   selector: 'app-projects-list',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './projects-list.html',
   styleUrl: './projects-list.css'
 })

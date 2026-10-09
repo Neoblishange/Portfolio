@@ -1,5 +1,7 @@
-package com.neoblishange.portfolio.entity;
+package com.neoblishange.portfolio.entity.project;
 
+import com.neoblishange.portfolio.entity.ProjectImage;
+import com.neoblishange.portfolio.entity.Skill;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -25,11 +27,22 @@ public class Project {
     @Column(nullable = false, length = 150)
     private String slug;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 30)
+    private ProjectType projectType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 30)
+    private List<ProjectContext> projectContext;
+
     @Column(nullable = false, length = 255)
     private String shortDescription;
 
     @Column(nullable = false)
     private List<String> description;
+
+    @Column(nullable = false)
+    private List<String> functionalities;
 
     @Column(nullable = false)
     private LocalDate startDate;
@@ -43,6 +56,14 @@ public class Project {
             orphanRemoval = true
     )
     private List<ProjectImage> images = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "project_skills",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id")
+    )
+    private List<Skill> skills = new ArrayList<>();
 
     public Project() {
     }
@@ -71,6 +92,22 @@ public class Project {
         this.slug = slug;
     }
 
+    public ProjectType getProjectType() {
+        return projectType;
+    }
+
+    public void setProjectType(ProjectType projectType) {
+        this.projectType = projectType;
+    }
+
+    public List<ProjectContext> getProjectContext() {
+        return projectContext;
+    }
+
+    public void setProjectContext(List<ProjectContext> projectContext) {
+        this.projectContext = projectContext;
+    }
+
     public String getShortDescription() {
         return shortDescription;
     }
@@ -85,6 +122,14 @@ public class Project {
 
     public void setDescription(List<String> description) {
         this.description = description;
+    }
+
+    public List<String> getFunctionalities() {
+        return functionalities;
+    }
+
+    public void setFunctionalities(List<String> functionalities) {
+        this.functionalities = functionalities;
     }
 
     public LocalDate getStartDate() {
@@ -109,5 +154,13 @@ public class Project {
 
     public void setImages(List<ProjectImage> images) {
         this.images = images;
+    }
+
+    public List<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
     }
 }

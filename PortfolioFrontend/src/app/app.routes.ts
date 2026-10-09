@@ -5,11 +5,11 @@ export const routes: Routes = [
     path: '',
     loadComponent: () => import('./features/home/home').then(m => m.Home)
   },
-  /**
   {
     path: 'projects',
     loadChildren: () => import('./features/projects/projects.routes').then(m => m.PROJECTS_ROUTES)
   },
+  /*
   {
     path: 'experiences',
     loadChildren: () => import('./features/experiences/experiences.routes').then(m => m.EXPERIENCES_ROUTES)
@@ -30,5 +30,5 @@ export const routes: Routes = [
     path: 'profile',
     loadChildren: () => import('./features/profile/profile.routes').then(m => m.PROFILE_ROUTES)
   }
-    */
+  */
 ];

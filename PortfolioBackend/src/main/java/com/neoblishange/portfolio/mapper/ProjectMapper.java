@@ -2,7 +2,7 @@ package com.neoblishange.portfolio.mapper;
 
 import com.neoblishange.portfolio.dto.project.ProjectRequestDTO;
 import com.neoblishange.portfolio.dto.project.ProjectResponseDTO;
-import com.neoblishange.portfolio.entity.Project;
+import com.neoblishange.portfolio.entity.project.Project;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

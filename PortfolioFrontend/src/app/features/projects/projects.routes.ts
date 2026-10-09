@@ -3,6 +3,12 @@ import { Routes } from '@angular/router';
 export const PROJECTS_ROUTES: Routes = [
   {
     path: '',
+    pathMatch: 'full',
+    redirectTo: '/'
+  },
+  /*
+  {
+    path: '',
     loadComponent: () =>
       import('./projects-list/projects-list').then(m => m.ProjectsList)
   },
@@ -11,14 +17,18 @@ export const PROJECTS_ROUTES: Routes = [
     loadComponent: () =>
       import('./projects-form/projects-form').then(m => m.ProjectsForm)
   },
+   */
   {
     path: ':id',
     loadComponent: () =>
       import('./projects-detail/projects-detail').then(m => m.ProjectsDetail)
   },
+  /*
   {
     path: ':id/edit',
     loadComponent: () =>
       import('./projects-form/projects-form').then(m => m.ProjectsForm)
   }
+
+   */
 ];

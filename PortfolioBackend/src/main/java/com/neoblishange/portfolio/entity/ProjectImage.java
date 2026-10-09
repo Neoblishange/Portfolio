@@ -1,5 +1,6 @@
 package com.neoblishange.portfolio.entity;
 
+import com.neoblishange.portfolio.entity.project.Project;
 import jakarta.persistence.*;
 
 @Entity
